@@ -48,10 +48,10 @@ const OrderPage = () => {
         </Box>
       ) : data ? (
         <>
-          <Box display={'flex'} flexDirection='column' alignItems='end' padding={5} gap={5}>
+          <Box display={'flex'} flexDirection='column' alignItems='end' p={5}>
             <Box display={'flex'} flexDirection='row' alignItems='center'>
               <Text width={20} textAlign='right' pr={2}>
-                거래일 :{' '}
+                거래일 :
               </Text>
               <Select maxWidth={150} onChange={chageDate} defaultValue={selectedDate}>
                 {existTransactionDates.map(date => (
@@ -60,9 +60,6 @@ const OrderPage = () => {
                   </option>
                 ))}
               </Select>
-            </Box>
-            <Box>
-              <Text>주문 건 : {orderListsByDate.length} 건</Text>
             </Box>
           </Box>
           <OrderList orderLists={orderListsByDate} />

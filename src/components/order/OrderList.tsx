@@ -1,4 +1,16 @@
-import { Box, Button, Center, HStack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  HStack,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
 import { Order } from 'types/Order';
 
@@ -46,6 +58,9 @@ const OrderList = ({ orderLists }: OrderListParam) => {
 
   return (
     <>
+      <Box pb={5} pr={5}>
+        <Text textAlign={'right'}>주문 건 : {orderLists.length} 건</Text>
+      </Box>
       <Table variant='striped'>
         <Thead>
           <Tr>
