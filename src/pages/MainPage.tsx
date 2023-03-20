@@ -3,10 +3,16 @@ import { useLoaderData } from 'react-router-dom';
 import { OrderDataType } from 'types/order';
 import { Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import useGetTodayOrder from 'utils/hooks/useGetTodayOrder';
+import { useFilterOrder, useIdSortOrder, useTimeSortOrder } from 'utils/hooks';
+import { SortType, TimeSortType } from 'types/sort';
+import { MAX_SIZE } from 'shared/Pagination';
+import { TODAY } from 'shared/Date';
 
-// 페이지 최대 한도
-const MAX_SIZE = 50;
-const TODAY = new Date('2023.03.08').toDateString();
+interface SortOptionType {
+  id: SortType;
+  time: TimeSortType;
+}
 
 const MainPage = () => {
   const orderDataResponse = useLoaderData() as OrderDataType[];
@@ -14,38 +20,22 @@ const MainPage = () => {
   const startPage = MAX_SIZE * currentPage - MAX_SIZE;
   const finishPage = MAX_SIZE * currentPage;
 
-  const [orderData, setOrderData] = useState<OrderDataType[]>(
-    orderDataResponse.filter(v => new Date(v.transaction_time).toDateString() === TODAY),
-  );
-
-  const [isAscending, setIsAscending] = useState<boolean>(true);
-  const [isDateAscending, setIsDateAscending] = useState<boolean | null>(null);
-
+  const [orderData, setOrderData] = useState<OrderDataType[]>(orderDataResponse);
   const [searchWord, setSearchWord] = useState<string>('');
+
+  const [sort, setSort] = useState<SortOptionType>({ id: 'asc', time: null });
 
   // 아이디 정렬
   useEffect(() => {
-    if (!isAscending) {
-      setOrderData(orderData.sort((a, b) => a.id - b.id));
-    } else {
-      setOrderData(orderData.sort((a, b) => b.id - a.id));
-    }
-  }, [isAscending]);
+    setOrderData(useIdSortOrder(orderData, sort.id));
+  }, [sort.id]);
 
   // 날짜 정렬
   useEffect(() => {
-    if (isDateAscending !== null) {
-      const sortedData = orderData.sort((a, b) => {
-        if (!isDateAscending) {
-          return new Date(a.transaction_time).getTime() - new Date(b.transaction_time).getTime();
-        } else {
-          return new Date(b.transaction_time).getTime() - new Date(a.transaction_time).getTime();
-        }
-      });
-
-      setOrderData(sortedData);
+    if (sort.time !== null) {
+      setOrderData(useTimeSortOrder(orderData, sort.time));
     }
-  }, [isDateAscending]);
+  }, [sort.time]);
 
   // 검색
   useEffect(() => {
@@ -55,19 +45,20 @@ const MainPage = () => {
       return;
     }
 
-    const filteredData = orderDataResponse.filter(v =>
-      v.customer_name.toLowerCase().includes(searchWord.toLowerCase()),
-    );
-    setOrderData(filteredData);
+    setOrderData(useFilterOrder(orderDataResponse, searchWord));
   }, [searchWord]);
+
+  useEffect(() => {
+    setOrderData(useGetTodayOrder(orderData));
+  }, []);
 
   return (
     <MainLayout>
       <SearchInput onSearchWordChange={setSearchWord} />
 
       <Flex>
-        <p>최근순</p>
-        <p>오래된순</p>
+        <p>최신순</p>
+        <p>거래 시간 순</p>
 
         <p>번호 오름차순</p>
         <p>번호 내림차순</p>
@@ -83,7 +74,7 @@ const MainPage = () => {
 
       <Pagination
         currentPage={currentPage}
-        totalPages={parseInt((orderData.length / MAX_SIZE).toString())}
+        totalPages={Math.floor(orderData.length / MAX_SIZE)}
         onPageChange={setCurrentPage}
       />
     </MainLayout>
