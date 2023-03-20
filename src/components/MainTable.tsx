@@ -1,11 +1,14 @@
+import { useEffect, useState } from 'react';
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { DataResponse } from 'types';
 import {
   Thead,
   Tbody,
@@ -13,12 +16,15 @@ import {
   Th,
   Td,
   TableContainer,
-  Table,
+  Table as ChakraTable,
   Button,
   Select,
   Input,
+  HStack,
+  Box,
+  Text,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { DataResponse } from 'types';
 
 const MainTable = ({
   data,
@@ -27,20 +33,28 @@ const MainTable = ({
   data: DataResponse[];
   columns: ColumnDef<DataResponse, any>[];
 }) => {
+  const [dateFilter, setDateFilter] = useState('2023-03-08');
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugTable: true,
   });
 
   useEffect(() => {
     table.setPageSize(50);
+    table.setColumnFilters([{ id: 'transaction_time', value: dateFilter }]);
   }, []);
 
   return (
     <TableContainer overflow={'hidden'}>
+      <HStack>
+        <Button>Today</Button>
+      </HStack>
       <Button onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
         {'<<'}
       </Button>
@@ -56,48 +70,75 @@ const MainTable = ({
       >
         {'>>'}
       </Button>
-      <span>
-        <div>Page</div>
-        <strong>
-          {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-        </strong>
-      </span>
-      <span>
-        | Go to page:
-        <Input
-          type='number'
-          defaultValue={table.getState().pagination.pageIndex + 1}
+      <HStack flexDir={'row'} justifyContent='space-around'>
+        <Box maxW={'100px'}>
+          <Text>
+            Page
+            <strong>
+              {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+            </strong>
+            <span>
+              | Go to page:
+              <Input
+                type='number'
+                defaultValue={table.getState().pagination.pageIndex + 1}
+                onChange={e => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  table.setPageIndex(page);
+                }}
+              />
+            </span>
+          </Text>
+        </Box>
+
+        <Select
+          maxW={'150px'}
+          value={table.getState().pagination.pageSize}
           onChange={e => {
-            const page = e.target.value ? Number(e.target.value) - 1 : 0;
-            table.setPageIndex(page);
+            table.setPageSize(Number(e.target.value));
           }}
-        />
-      </span>
-      <Select
-        maxW={'150px'}
-        value={table.getState().pagination.pageSize}
-        onChange={e => {
-          table.setPageSize(Number(e.target.value));
-        }}
-      >
-        {[10, 20, 30, 40, 50].map(pageSize => (
-          <option key={pageSize} value={pageSize}>
-            Show {pageSize}
-          </option>
-        ))}
-      </Select>
-      <div>{table.getRowModel().rows.length} Rows</div>
-      <Table variant='simple'>
+        >
+          {[10, 20, 30, 40, 50].map(pageSize => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </Select>
+        <span>{table.getRowModel().rows.length} Rows</span>
+      </HStack>
+      <ChakraTable variant='simple'>
         <Thead>
           {table.getHeaderGroups().map(headerGroup => (
             <Tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
-                <Th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </Th>
-              ))}
+              {headerGroup.headers.map(header => {
+                return (
+                  <Th key={header.id}>
+                    {header.isPlaceholder ? null : (
+                      <>
+                        {' '}
+                        {header.id === 'id' || header.id === 'transaction_time' ? (
+                          <Button
+                            bg='none'
+                            {...{
+                              onClick: header.column.getToggleSortingHandler(),
+                            }}
+                          >
+                            {flexRender(header.column.columnDef.header, header.getContext())}
+                            {{
+                              asc: ' 🔼',
+                              desc: ' 🔽',
+                            }[header.column.getIsSorted() as string] ?? null}
+                          </Button>
+                        ) : (
+                          <Button bg='none'>
+                            {flexRender(header.column.columnDef.header, header.getContext())}
+                          </Button>
+                        )}
+                      </>
+                    )}
+                  </Th>
+                );
+              })}
             </Tr>
           ))}
         </Thead>
@@ -110,7 +151,7 @@ const MainTable = ({
             </Tr>
           ))}
         </Tbody>
-      </Table>
+      </ChakraTable>
     </TableContainer>
   );
 };
