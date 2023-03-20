@@ -1,7 +1,7 @@
 import { OrderDataType } from 'types/order';
-import { TimeSortType } from 'types/sort';
+import { SortType } from 'types/sort';
 
-const useTimeSortOrder = (data: OrderDataType[], sort: TimeSortType) => {
+const useTimeSortOrder = (data: OrderDataType[], sort: SortType) => {
   return data.sort((a, b) => {
     if (sort === 'asc') {
       return new Date(a.transaction_time).getTime() - new Date(b.transaction_time).getTime();
