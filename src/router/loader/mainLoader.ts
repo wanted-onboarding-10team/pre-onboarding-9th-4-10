@@ -1,8 +1,9 @@
 import { getOrderDataApi } from 'utils/api/order';
+import { useGetTodayOrder } from 'utils/hooks';
 
 const mainLoader = async () => {
   const { data } = await getOrderDataApi();
 
-  return data;
+  return useGetTodayOrder(data);
 };
 export default mainLoader;
