@@ -13,7 +13,10 @@ const Order = ({
     <Tr>
       <Th color='blue.400'>{id}</Th>
       <Th>{transaction_time}</Th>
-      <Th textAlign='center'>{status ? 'O' : 'X'}</Th>
+
+      <Th textAlign='center' color={status ? 'blue.300' : 'red.300'}>
+        {status ? 'O' : 'X'}
+      </Th>
       <Th textAlign='center'>{customer_id}</Th>
       <Th>{customer_name}</Th>
       <Th color='red.400'>{currency}</Th>

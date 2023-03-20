@@ -1,7 +1,7 @@
-import { MainLayout, Order, Pagination, SearchInput } from 'components';
+import { MainLayout, OrderTable, Pagination, SearchInput } from 'components';
 import { useLoaderData } from 'react-router-dom';
 import { OrderDataType } from 'types/order';
-import { Table, Thead, Tbody, Tr, Th, TableContainer, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 // 페이지 최대 한도
@@ -79,25 +79,7 @@ const MainPage = () => {
         <p>{TODAY}</p>
       </Flex>
 
-      <TableContainer width='1200px'>
-        <Table variant='simple'>
-          <Thead>
-            <Tr>
-              <Th>주문번호</Th>
-              <Th>거래시간</Th>
-              <Th textAlign='center'> 주문처리상태</Th>
-              <Th textAlign='center'>고객번호</Th>
-              <Th>고객이름</Th>
-              <Th>가격</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {orderData.slice(startPage, finishPage).map(v => (
-              <Order {...v} key={v.id} />
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <OrderTable data={orderData.slice(startPage, finishPage)} />
 
       <Pagination
         currentPage={currentPage}
