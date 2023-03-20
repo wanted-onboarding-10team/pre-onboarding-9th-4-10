@@ -3,10 +3,14 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFacetedMinMaxValues,
   getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  Header,
+  Table,
   useReactTable,
 } from '@tanstack/react-table';
 import {
@@ -25,6 +29,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { DataResponse } from 'types';
+import SearchMenu from './tables/SearchMenu';
+import { CustomTextBtn } from './common';
 
 const MainTable = ({
   data,
@@ -43,11 +49,13 @@ const MainTable = ({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedMinMaxValues: getFacetedMinMaxValues(),
   });
 
   useEffect(() => {
     table.setPageSize(50);
-    table.setColumnFilters([{ id: 'transaction_time', value: dateFilter }]);
+    table.setColumnFilters([{ id: 'date', value: dateFilter }]);
   }, []);
 
   return (
@@ -108,39 +116,14 @@ const MainTable = ({
       </HStack>
       <ChakraTable variant='simple'>
         <Thead>
-          {table.getHeaderGroups().map(headerGroup => (
-            <Tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
-                return (
-                  <Th key={header.id}>
-                    {header.isPlaceholder ? null : (
-                      <>
-                        {' '}
-                        {header.id === 'id' || header.id === 'transaction_time' ? (
-                          <Button
-                            bg='none'
-                            {...{
-                              onClick: header.column.getToggleSortingHandler(),
-                            }}
-                          >
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                            {{
-                              asc: ' 🔼',
-                              desc: ' 🔽',
-                            }[header.column.getIsSorted() as string] ?? null}
-                          </Button>
-                        ) : (
-                          <Button bg='none'>
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                          </Button>
-                        )}
-                      </>
-                    )}
-                  </Th>
-                );
-              })}
-            </Tr>
-          ))}
+          {table.getHeaderGroups().map(headerGroup => {
+            const { id, headers } = headerGroup;
+            return (
+              <Tr key={id}>
+                <ThBlock headers={headers} table={table} />
+              </Tr>
+            );
+          })}
         </Thead>
         <Tbody>
           {table.getRowModel().rows.map(row => (
@@ -157,3 +140,53 @@ const MainTable = ({
 };
 
 export default MainTable;
+
+const ThBlock = ({
+  headers,
+  table,
+}: {
+  headers: Header<DataResponse, unknown>[];
+  table: Table<DataResponse>;
+}) => {
+  return (
+    <>
+      {headers.map(header => {
+        return (
+          <Th key={header.id}>
+            {header.isPlaceholder ? null : <ThColButton header={header} table={table} />}
+          </Th>
+        );
+      })}
+    </>
+  );
+};
+
+const ThColButton = ({
+  header,
+  table,
+}: {
+  header: Header<DataResponse, unknown>;
+  table: Table<DataResponse>;
+}) => {
+  if (header.id === 'id' || header.id === 'time') {
+    return (
+      <CustomTextBtn
+        {...{
+          onClick: header.column.getToggleSortingHandler(),
+        }}
+      >
+        {flexRender(header.column.columnDef.header, header.getContext())}
+        {{
+          asc: ' 🔼',
+          desc: ' 🔽',
+        }[header.column.getIsSorted() as string] ?? null}
+      </CustomTextBtn>
+    );
+  }
+
+  if (header.id === 'customer_name') return <SearchMenu column={header.column} table={table} />;
+
+  return (
+    <CustomTextBtn>{flexRender(header.column.columnDef.header, header.getContext())}</CustomTextBtn>
+  );
+};
