@@ -122,7 +122,7 @@ const MainPage = () => {
 
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.floor(orderData.length / MAX_SIZE)}
+        totalPages={Math.ceil(orderData.length / MAX_SIZE)}
         onPageChange={setCurrentPage}
       />
     </MainLayout>
