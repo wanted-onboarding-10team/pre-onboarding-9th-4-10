@@ -23,12 +23,14 @@ const pagingOffset = 10;
 
 const OrderList = ({ orderLists }: OrderListParam) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const sortKey: string[] = searchParams.getAll('sort');
   const totalOrders = orderLists ? orderLists.length - 1 : 0;
   const maxIndex = Math.floor(totalOrders / pageSize) - 1;
   const pagingIndex = parseInt(searchParams.get('page') ?? '1') - 1;
   const startPageIndex = pagingIndex - ((pagingIndex - 1) % 10) - 1;
   const lastPageIndex =
     maxIndex >= startPageIndex + pagingOffset ? startPageIndex + pagingOffset : maxIndex + 1;
+
   const handlePageMove = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const {
       currentTarget: { value },
@@ -43,6 +45,7 @@ const OrderList = ({ orderLists }: OrderListParam) => {
       return searchParams;
     });
   };
+
   const handlePageNextIndexs = () => {
     setSearchParams(searchParams => {
       searchParams.set(
@@ -56,8 +59,40 @@ const OrderList = ({ orderLists }: OrderListParam) => {
     });
   };
 
+  const onClickSortKey = (key: string) => {
+    const newSortKey = sortKey.includes(key)
+      ? sortKey.filter(value => value !== key)
+      : [...sortKey, key];
+    searchParams.delete('sort');
+    newSortKey.forEach(key => {
+      searchParams.append('sort', key);
+    });
+    setSearchParams(searchParams);
+  };
+
+  sortKey.forEach(sortKey => {
+    orderLists.sort((a, b) =>
+      (sortKey === 'id' ? a.id > b.id : a.transaction_time > b.transaction_time) ? -1 : 1,
+    );
+  });
+
   return (
     <>
+      <Box pb={5} pr={5} display={'flex'} gap={2} alignItems='center'>
+        <Text>정렬</Text>
+        <Button
+          onClick={() => onClickSortKey('id')}
+          backgroundColor={sortKey.includes('id') ? 'gray.300' : 'gray.100'}
+        >
+          주문번호
+        </Button>
+        <Button
+          onClick={() => onClickSortKey('transaction_time')}
+          backgroundColor={sortKey.includes('transaction_time') ? 'gray.300' : 'gray.100'}
+        >
+          거래일 & 거래시간
+        </Button>
+      </Box>
       <Box pb={5} pr={5}>
         <Text textAlign={'right'}>주문 건 : {orderLists.length} 건</Text>
       </Box>
