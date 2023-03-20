@@ -7,7 +7,10 @@ const useQuery = (url: string) => {
 
   const fetchData = async () => {
     const { data: orderCategory }: { data: OrderCategory[] } = await axios.get(url);
-    setData(orderCategory);
+    const specificOrderData = orderCategory.filter(
+      data => data.transaction_time.split(' ')[0] === '2023-03-08',
+    );
+    setData(specificOrderData);
   };
 
   useEffect(() => {
