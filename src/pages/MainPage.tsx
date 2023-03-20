@@ -1,9 +1,10 @@
-import { MainLayout, Order, Pagination } from 'components';
+import { MainLayout, Order, Pagination, SearchInput } from 'components';
 import { useLoaderData } from 'react-router-dom';
 import { OrderDataType } from 'types/order';
 import { Table, Thead, Tbody, Tr, Th, TableContainer } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
+// 페이지 최대 한도
 const MAX_SIZE = 50;
 
 const MainPage = () => {
@@ -12,14 +13,14 @@ const MainPage = () => {
   const startPage = MAX_SIZE * currentPage - MAX_SIZE;
   const finishPage = MAX_SIZE * currentPage;
 
-  console.log(startPage, finishPage, currentPage);
-
   const [test, setTest] = useState<OrderDataType[]>(orderData.slice(startPage, finishPage));
+
   const [isAscending, setIsAscending] = useState<boolean>(true);
   const [isDateAscending, setIsDateAscending] = useState<boolean | null>(null);
 
-  useEffect(() => setTest(orderData.slice(startPage, finishPage)), [startPage, finishPage]);
+  const [searchWord, setSearchWord] = useState<string>('');
 
+  // 아이디 정렬
   useEffect(() => {
     if (!isAscending) {
       setTest(test.sort((a, b) => a.id - b.id));
@@ -28,6 +29,7 @@ const MainPage = () => {
     }
   }, [isAscending]);
 
+  // 날짜 정렬
   useEffect(() => {
     if (isDateAscending !== null) {
       const sortedData = test.sort((a, b) => {
@@ -42,8 +44,23 @@ const MainPage = () => {
     }
   }, [isDateAscending]);
 
+  // 검색
+  useEffect(() => {
+    if (searchWord === '') {
+      setCurrentPage(1);
+      setTest(orderData);
+      return;
+    }
+
+    const filteredData = orderData.filter(v =>
+      v.customer_name.toLowerCase().includes(searchWord.toLowerCase()),
+    );
+    setTest(filteredData);
+  }, [searchWord]);
+
   return (
     <MainLayout>
+      <SearchInput onSearchWordChange={setSearchWord} />
       <TableContainer width='1200px'>
         <Table variant='simple'>
           <Thead>
@@ -62,7 +79,7 @@ const MainPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {test.map(v => (
+            {test.slice(startPage, finishPage).map(v => (
               <Order {...v} key={v.id} />
             ))}
           </Tbody>
@@ -70,7 +87,9 @@ const MainPage = () => {
       </TableContainer>
       <Pagination
         currentPage={currentPage}
-        totalPages={orderData.length / MAX_SIZE}
+        totalPages={
+          searchWord ? parseInt((test.length / MAX_SIZE).toString()) : orderData.length / MAX_SIZE
+        }
         onPageChange={setCurrentPage}
       />
     </MainLayout>
