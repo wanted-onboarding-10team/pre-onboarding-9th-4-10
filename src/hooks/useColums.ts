@@ -28,10 +28,12 @@ function useColums() {
         cell: info => info.getValue().toString(),
       }),
       columnHelper.accessor('transaction_time', {
+        id: 'date',
         header: '거래 날짜',
         cell: info => info.getValue().split(' ')[0],
       }),
       columnHelper.accessor('transaction_time', {
+        id: 'time',
         header: '거래 시간',
         cell: info => info.getValue().split(' ')[1],
       }),
