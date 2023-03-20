@@ -6,7 +6,7 @@ import router from 'router';
 function App() {
   return (
     <ChakraProvider>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </ChakraProvider>
   );
 }

@@ -4,5 +4,5 @@ export interface OrderDataType {
   customer_name: string;
   id: number;
   status: boolean;
-  transaction_time: string;
+  transaction_time: string; // Date
 }
