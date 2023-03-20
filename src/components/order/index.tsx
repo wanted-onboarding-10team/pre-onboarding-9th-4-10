@@ -11,12 +11,12 @@ const Order = ({
 }: OrderDataType) => {
   return (
     <Tr>
-      <Th>{id}</Th>
+      <Th color='blue.400'>{id}</Th>
       <Th>{transaction_time}</Th>
-      <Th>{status ? 'O' : 'X'}</Th>
-      <Th>{customer_id}</Th>
+      <Th textAlign='center'>{status ? 'O' : 'X'}</Th>
+      <Th textAlign='center'>{customer_id}</Th>
       <Th>{customer_name}</Th>
-      <Th>{currency}</Th>
+      <Th color='red.400'>{currency}</Th>
     </Tr>
   );
 };
