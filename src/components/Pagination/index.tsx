@@ -1,6 +1,13 @@
 import { HStack, Button } from '@chakra-ui/react';
+import { Dispatch, SetStateAction } from 'react';
 
-const Pagination = ({ currentPage, totalPages, onPageChange }: any) => {
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: Dispatch<SetStateAction<number>>;
+}
+
+const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
   // 이전 페이지로 이동할 수 있는지 여부
   const hasPrevPage = currentPage <= 1;
 
