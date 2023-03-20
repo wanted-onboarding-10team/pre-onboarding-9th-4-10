@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Table, Column } from '@tanstack/react-table';
 import { SearchIcon } from '@chakra-ui/icons';
 import { Menu, MenuButton, MenuList, IconButton, Button, Input, HStack } from '@chakra-ui/react';
-import { CustomTextBtn } from 'components/common';
+import { CustomTextBtn } from 'components/common/CustomTextBtn';
 import { DataResponse } from 'types';
 
 const SearchMenu = ({

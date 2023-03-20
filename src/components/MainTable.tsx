@@ -30,7 +30,7 @@ import {
 } from '@chakra-ui/react';
 import { DataResponse } from 'types';
 import SearchMenu from './tables/SearchMenu';
-import { CustomTextBtn } from './common';
+import { CustomTextBtn } from './common/CustomTextBtn';
 
 const MainTable = ({
   data,
