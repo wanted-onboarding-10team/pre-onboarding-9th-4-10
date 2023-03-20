@@ -1,17 +1,4 @@
-import {
-  Box,
-  Button,
-  Center,
-  HStack,
-  Select,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
+import { Box, Button, Center, HStack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
 import { Order } from 'types/Order';
 
@@ -24,19 +11,7 @@ const pagingOffset = 10;
 
 const OrderList = ({ orderLists }: OrderListParam) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const init: { [key: string]: Order[] } = {};
-  const orderListsBytransactionDate = orderLists.reduce((prev, curr) => {
-    const dateTime = curr.transaction_time.split(' ');
-    prev[dateTime[0]] = prev[dateTime[0]] || [];
-    prev[dateTime[0]].push(curr);
-    return prev;
-  }, init);
-  const existTransactionDates = Object.keys(orderListsBytransactionDate).sort();
-  const selectedDate = searchParams.get('date') ?? '2023-03-08';
-
-  const orderListsByDate = orderListsBytransactionDate[selectedDate];
-
-  const totalOrders = orderListsByDate ? orderListsByDate.length - 1 : 0;
+  const totalOrders = orderLists ? orderLists.length - 1 : 0;
   const maxIndex = Math.floor(totalOrders / pageSize) - 1;
   const pagingIndex = parseInt(searchParams.get('page') ?? '1') - 1;
   const startPageIndex = pagingIndex - ((pagingIndex - 1) % 10) - 1;
@@ -69,33 +44,8 @@ const OrderList = ({ orderLists }: OrderListParam) => {
     });
   };
 
-  const chageDate = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchParams(searchParams => {
-      searchParams.delete('page');
-      searchParams.set('date', event.target.value);
-      return searchParams;
-    });
-  };
-
   return (
     <>
-      <Box display={'flex'} flexDirection='column' alignItems='end' padding={5} gap={5}>
-        <Box display={'flex'} flexDirection='row' alignItems='center'>
-          <Text width={20} textAlign='right' pr={2}>
-            거래일 :{' '}
-          </Text>
-          <Select maxWidth={150} onChange={chageDate} defaultValue={selectedDate}>
-            {existTransactionDates.map(date => (
-              <option key={date} value={date}>
-                {date}
-              </option>
-            ))}
-          </Select>
-        </Box>
-        <Box>
-          <Text>주문 건 : {orderListsByDate.length} 건</Text>
-        </Box>
-      </Box>
       <Table variant='striped'>
         <Thead>
           <Tr>
@@ -108,18 +58,16 @@ const OrderList = ({ orderLists }: OrderListParam) => {
           </Tr>
         </Thead>
         <Tbody>
-          {orderListsByDate
-            .slice(pageSize * pagingIndex, pageSize * pagingIndex + pageSize)
-            .map(item => (
-              <Tr key={item.id}>
-                <Td>{item.id}</Td>
-                <Td>{item.transaction_time}</Td>
-                <Td>{item.status ? '처리' : '비처리'}</Td>
-                <Td>{item.customer_id}</Td>
-                <Td>{item.customer_name}</Td>
-                <Td>{item.currency}</Td>
-              </Tr>
-            ))}
+          {orderLists.slice(pageSize * pagingIndex, pageSize * pagingIndex + pageSize).map(item => (
+            <Tr key={item.id}>
+              <Td>{item.id}</Td>
+              <Td>{item.transaction_time}</Td>
+              {item.status ? <Td>처리</Td> : <Td color='red.300'>비처리</Td>}
+              <Td>{item.customer_id}</Td>
+              <Td>{item.customer_name}</Td>
+              <Td>{item.currency}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
       <Center>
