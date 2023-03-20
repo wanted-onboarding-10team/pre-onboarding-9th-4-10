@@ -1,19 +1,22 @@
 import { MainLayout, OrderTable, Pagination, SearchInput } from 'components';
 import { useLoaderData } from 'react-router-dom';
 import { OrderDataType } from 'types/order';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import useGetTodayOrder from 'utils/hooks/useGetTodayOrder';
-import { useFilterOrder, useIdSortOrder, useTimeSortOrder } from 'utils/hooks';
-import { SortType, TimeSortType } from 'types/sort';
+import {
+  useFilterOrder,
+  useIdSortOrder,
+  useStatusFilterOrder,
+  useTimeSortOrder,
+} from 'utils/hooks';
+import { SortType } from 'types/sort';
 import { MAX_SIZE } from 'shared/Pagination';
 import { TODAY } from 'shared/Date';
 
 interface SortOptionType {
   id: SortType;
-  time: TimeSortType;
+  time: SortType;
 }
-
 const MainPage = () => {
   const orderDataResponse = useLoaderData() as OrderDataType[];
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -23,21 +26,19 @@ const MainPage = () => {
   const [orderData, setOrderData] = useState<OrderDataType[]>(orderDataResponse);
   const [searchWord, setSearchWord] = useState<string>('');
 
-  const [sort, setSort] = useState<SortOptionType>({ id: 'asc', time: null });
+  const [sortOption, setSortOption] = useState<SortOptionType>({ id: null, time: null });
+  const [filterOption, setFilterOption] = useState<boolean | null>(null);
 
-  // 아이디 정렬
   useEffect(() => {
-    setOrderData(useIdSortOrder(orderData, sort.id));
-  }, [sort.id]);
+    setOrderData(useIdSortOrder(orderData, sortOption.id));
+  }, [sortOption.id]);
 
-  // 날짜 정렬
   useEffect(() => {
-    if (sort.time !== null) {
-      setOrderData(useTimeSortOrder(orderData, sort.time));
+    if (sortOption.time !== null) {
+      setOrderData(useTimeSortOrder(orderData, sortOption.time));
     }
-  }, [sort.time]);
+  }, [sortOption.time]);
 
-  // 검색
   useEffect(() => {
     if (searchWord === '') {
       setCurrentPage(1);
@@ -49,25 +50,72 @@ const MainPage = () => {
   }, [searchWord]);
 
   useEffect(() => {
-    setOrderData(useGetTodayOrder(orderData));
-  }, []);
+    if (filterOption !== null) {
+      setOrderData(useStatusFilterOrder(orderDataResponse, filterOption));
+    }
+  }, [filterOption]);
 
   return (
     <MainLayout>
+      <Flex justifyContent='flex-end' width='1200px'>
+        <Text fontSize='2xl' as='i' color='gray.500'>
+          {TODAY}
+        </Text>
+      </Flex>
+
       <SearchInput onSearchWordChange={setSearchWord} />
 
-      <Flex>
-        <p>최신순</p>
-        <p>거래 시간 순</p>
+      <Flex justifyContent='flex-end' width='1200px' gap='20px' fontSize='sm' fontWeight='900'>
+        <div>
+          <Text
+            color={sortOption.time === 'desc' ? 'blue.400' : 'gray.400'}
+            cursor='pointer'
+            onClick={() => setSortOption(prev => ({ ...prev, time: 'desc' }))}
+          >
+            최신순
+          </Text>
+          <Text
+            color={sortOption.time === 'asc' ? 'blue.400' : 'gray.400'}
+            cursor='pointer'
+            onClick={() => setSortOption(prev => ({ ...prev, time: 'asc' }))}
+          >
+            거래 시간 순
+          </Text>
+        </div>
 
-        <p>번호 오름차순</p>
-        <p>번호 내림차순</p>
+        <div>
+          <Text
+            color={sortOption.id === 'asc' ? 'blue.400' : 'gray.400'}
+            cursor='pointer'
+            onClick={() => setSortOption(prev => ({ ...prev, id: 'asc' }))}
+          >
+            번호 오름차순
+          </Text>
+          <Text
+            color={sortOption.id === 'desc' ? 'blue.400' : 'gray.400'}
+            cursor='pointer'
+            onClick={() => setSortOption(prev => ({ ...prev, id: 'desc' }))}
+          >
+            번호 내림차순
+          </Text>
+        </div>
 
-        <p>주문처리상태</p>
-      </Flex>
-      <Flex>
-        <p>오늘</p>
-        <p>{TODAY}</p>
+        <div>
+          <Text
+            color={filterOption ? 'blue.400' : 'gray.400'}
+            cursor='pointer'
+            onClick={() => setFilterOption(true)}
+          >
+            주문처리상태 O
+          </Text>
+          <Text
+            color={filterOption === false ? 'blue.400' : 'gray.400'}
+            cursor='pointer'
+            onClick={() => setFilterOption(false)}
+          >
+            주문처리상태 X
+          </Text>
+        </div>
       </Flex>
 
       <OrderTable data={orderData.slice(startPage, finishPage)} />
