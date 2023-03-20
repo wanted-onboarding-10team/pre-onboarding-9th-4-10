@@ -62,6 +62,7 @@ const MainTable = ({
     <TableContainer overflow={'hidden'}>
       <HStack>
         <Button>Today</Button>
+        <Button onClick={() => table.setColumnFilters([])}>모든 필터 초기화</Button>
       </HStack>
       <Button onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
         {'<<'}
