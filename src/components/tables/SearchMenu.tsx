@@ -45,15 +45,16 @@ const SearchMenu = ({
         <>{header.column.columnDef.header}</>
         <MenuButton as={IconButton} aria-label='Options' icon={<SearchIcon />} variant='outline' />
       </CustomTextBtn>
+
       {typeof firstValue === 'string' ? (
         <MenuList padding={'3'}>
           <datalist id={column.id + 'list'}>
             {sortedUniqueValues.slice(0, 5000).map((value: typeof firstValue) => (
-              <option value={value} key={value} />
+              <option value={value} key={'option' + value} />
             ))}
           </datalist>
-          <HStack>
-            <form onSubmit={e => searchBtnHandler(e)}>
+          <form onSubmit={e => searchBtnHandler(e)}>
+            <HStack>
               <Input
                 type='text'
                 list={column.id + 'list'}
@@ -61,14 +62,15 @@ const SearchMenu = ({
                 placeholder={`Search... (${column.getFacetedUniqueValues().size})`}
                 onChange={e => setSearchValue(e.target.value)}
               />
-            </form>
-            <Button variant='outline' type='submit'>
-              검색
-            </Button>
-            <Button variant='outline' onClick={() => column.setFilterValue('')}>
-              초기화
-            </Button>
-          </HStack>
+
+              <Button variant='outline' type='submit'>
+                검색
+              </Button>
+              <Button variant='outline' onClick={() => column.setFilterValue('')}>
+                초기화
+              </Button>
+            </HStack>
+          </form>
         </MenuList>
       ) : (
         <MenuList padding={'3'}>
@@ -84,18 +86,15 @@ const SearchMenu = ({
             }}
           >
             {sortedUniqueValues.slice(0, 5000).map((value: string) => (
-              <>
-                <MenuItemOption
-                  minH='35px'
-                  fontSize={'md'}
-                  fontWeight={'bold'}
-                  value={value.toString()}
-                  key={'status key' + value.toString()}
-                >
-                  {value.toString()}
-                </MenuItemOption>
-                <MenuDivider marginTop={1} />
-              </>
+              <MenuItemOption
+                minH='35px'
+                fontSize={'md'}
+                fontWeight={'bold'}
+                value={value.toString()}
+                key={'status key' + value.toString()}
+              >
+                {value.toString()}
+              </MenuItemOption>
             ))}
             <MenuItemOption value='ALL' minH='35px' fontSize={'md'} fontWeight={'bold'}>
               ALL
