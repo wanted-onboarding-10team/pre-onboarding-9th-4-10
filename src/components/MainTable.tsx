@@ -184,7 +184,8 @@ const ThColButton = ({
     );
   }
 
-  if (header.id === 'customer_name') return <SearchMenu column={header.column} table={table} />;
+  if (header.id === 'customer_name' || header.id === 'status')
+    return <SearchMenu header={header} column={header.column} table={table} />;
 
   return (
     <CustomTextBtn>{flexRender(header.column.columnDef.header, header.getContext())}</CustomTextBtn>
