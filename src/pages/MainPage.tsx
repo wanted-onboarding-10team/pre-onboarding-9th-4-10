@@ -1,7 +1,7 @@
 import { MainLayout, OrderTable, Pagination, SearchInput } from 'components';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { OrderDataType } from 'types/order';
-import { Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import {
   useFilterOrder,
@@ -22,7 +22,7 @@ const MainPage = () => {
   const startPage = MAX_SIZE * currentPage - MAX_SIZE;
   const finishPage = MAX_SIZE * currentPage;
 
-  const [orderData, setOrderData] = useState<OrderDataType[]>(orderDataResponse);
+  const [orderData, setOrderData] = useState<OrderDataType[]>([]);
   const [searchWord, setSearchWord] = useState<string>('');
 
   const [sortOption, setSortOption] = useState<SortOptionType>({ id: null, time: null });
@@ -48,6 +48,7 @@ const MainPage = () => {
   }, [searchWord]);
 
   useEffect(() => {
+    setCurrentPage(1);
     setOrderData(useStatusFilterOrder(orderDataResponse, filterOption));
   }, [filterOption]);
 
@@ -68,6 +69,16 @@ const MainPage = () => {
     setOrderData(orderDataResponse);
   }, [orderDataResponse]);
 
+  useEffect(() => {
+    const filteredData = useFilterOrder(orderDataResponse, searchWord);
+    const sortedData = useTimeSortOrder(
+      useIdSortOrder(filteredData, sortOption.id),
+      sortOption.time,
+    );
+    const statusFilteredData = useStatusFilterOrder(sortedData, filterOption);
+    setOrderData(statusFilteredData);
+  }, [orderDataResponse, searchWord, sortOption, filterOption]);
+
   return (
     <MainLayout>
       <Flex justifyContent='flex-end' width='1200px'>
@@ -78,11 +89,13 @@ const MainPage = () => {
 
       <SearchInput onSearchWordChange={setSearchWord} />
 
-      <OrderTable
-        data={orderData.slice(startPage, finishPage)}
-        setSortOption={setSortOption}
-        setFilterOption={setFilterOption}
-      />
+      <Box height='700px' overflow='scroll'>
+        <OrderTable
+          data={orderData.slice(startPage, finishPage)}
+          setSortOption={setSortOption}
+          setFilterOption={setFilterOption}
+        />
+      </Box>
 
       <Pagination
         currentPage={currentPage}
