@@ -30,13 +30,13 @@ const TableHeader = () => {
     <TableHeaderBox>
       <tr>
         <HeaderColumn className='sort' onClick={onClickSortById}>
-          {sortType?.includes('id:asc') ? '주문번호▼' : '주문번호▲'}
+          {sortType?.includes('id:desc') ? '주문번호▼' : '주문번호▲'}
         </HeaderColumn>
         <HeaderColumn>고객번호</HeaderColumn>
         <HeaderColumn>고객명</HeaderColumn>
         <HeaderColumn>가격</HeaderColumn>
         <HeaderColumn className='sort' onClick={onClickSortByTime}>
-          {sortType?.includes('time:asc') ? '거래일 & 거래시간▼' : '거래일 & 거래시간▲'}
+          {sortType?.includes('time:desc') ? '거래일 & 거래시간▼' : '거래일 & 거래시간▲'}
         </HeaderColumn>
         <HeaderColumn>주문 처리 상태</HeaderColumn>
       </tr>
