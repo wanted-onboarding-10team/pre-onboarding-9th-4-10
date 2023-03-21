@@ -53,7 +53,7 @@ const MainPage = () => {
   }, [filterOption]);
 
   useEffect(() => {
-    setCurrentPage(Number(query.get('pages')));
+    setCurrentPage(Number(query.get('pages') ?? 1));
 
     const intervalId = setInterval(async () => {
       const data = await mainLoader();
