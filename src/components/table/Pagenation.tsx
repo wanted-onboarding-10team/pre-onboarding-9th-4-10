@@ -7,15 +7,22 @@ const Pagenation = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
   const [query, setQuery] = useSearchParams();
   const [currentPage, setCurrentPage] = useState<number>();
 
-  const handlePage = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePageQuery = (event: React.MouseEvent<HTMLButtonElement>) => {
     setCurrentPage(Number(event.currentTarget.value));
-    setQuery({ page: String(event.currentTarget.value) });
+
+    const prevQuery = Array.from(query).reduce((prev: { [index: string]: string }, current) => {
+      prev[current[0]] = current[1];
+      return prev;
+    }, {});
+
+    prevQuery.page = event.currentTarget.value;
+    setQuery(prevQuery);
   };
 
   useEffect(() => {
     const pageNumber = query.get('page');
     setCurrentPage(pageNumber && pageNumber !== '0' ? Number(query.get('page')) : 1);
-  }, []);
+  }, [query]);
 
   return (
     <PagenationBox>
@@ -24,7 +31,7 @@ const Pagenation = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
           return (
             <PageButton
               key={`page_${index + 1}`}
-              onClick={handlePage}
+              onClick={handlePageQuery}
               value={index + 1}
               style={{
                 border: currentPage === index + 1 ? '2px solid black' : '',
