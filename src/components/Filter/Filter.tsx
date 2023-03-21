@@ -17,6 +17,9 @@ const Filter = () => {
       <FilterSelect onClick={() => setClick(!click)}>주문 처리 상태 ▼</FilterSelect>
       {click && (
         <ListBox>
+          <li value=''>
+            <List onClick={() => handleFilter('')}>전체</List>
+          </li>
           <li value='true'>
             <List onClick={() => handleFilter('true')}>주문 완료</List>
           </li>
