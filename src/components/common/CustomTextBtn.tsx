@@ -1,9 +1,9 @@
-import { Text, TextProps } from '@chakra-ui/react';
+import { Text, TextProps, Box, BoxProps } from '@chakra-ui/react';
 
-export const CustomTextBtn = (props: TextProps) => {
+export const CustomTextBtn = (props: BoxProps) => {
   return (
-    <Text fontSize={'xl'} cursor={'pointer'} _selection={{ background: 'none' }} {...props}>
+    <Box fontSize={'xl'} cursor={'pointer'} _selection={{ background: 'none' }} {...props}>
       {props.children}
-    </Text>
+    </Box>
   );
 };

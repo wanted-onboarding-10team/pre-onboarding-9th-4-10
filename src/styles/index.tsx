@@ -1,4 +1,5 @@
 import { Global, css } from '@emotion/react';
+import { extendTheme } from '@chakra-ui/react';
 
 const style = css`
   @font-face {
@@ -9,6 +10,16 @@ const style = css`
     font-family: 'Pretendard';
   }
 `;
+
+export const theme = extendTheme({
+  styles: {
+    global: () => ({
+      body: {
+        bg: '#f3f6f7',
+      },
+    }),
+  },
+});
 
 const GlobalStyle = () => <Global styles={style} />;
 
