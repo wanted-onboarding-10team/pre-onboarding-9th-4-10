@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useQuery } from 'hooks';
+import { QUERY_KEY } from 'constants/index';
 
 const Pagination = ({ pages }: { pages: number }) => {
   const [clickPage, setClickPage] = useState<number>(1);
@@ -11,7 +12,7 @@ const Pagination = ({ pages }: { pages: number }) => {
   const lastNum = 1 - (1 % 5) + pages;
 
   const handlePage = (i: number) => {
-    handleQuery('page', i.toString());
+    handleQuery(QUERY_KEY.page, i.toString());
     setClickPage(i);
   };
 

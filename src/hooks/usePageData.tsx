@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useOrderData from './useOrderData';
+import { useOrderData } from 'hooks';
 import { SINGLE_PAGE_SIZE, QUERY_KEY } from 'constants/index';
 import { OrderData } from 'types';
 
