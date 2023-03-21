@@ -1,5 +1,6 @@
 import { HStack, Button } from '@chakra-ui/react';
 import { Dispatch, SetStateAction } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 interface PaginationProps {
   currentPage: number;
@@ -24,8 +25,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
     onPageChange(currentPage + 1);
   };
 
+  const [_, setQuery] = useSearchParams();
+
   // 페이지 버튼 클릭 이벤트 핸들러
   const handlePageClick = (page: number) => () => {
+    setQuery(`pages=${page}`);
     onPageChange(page);
   };
 

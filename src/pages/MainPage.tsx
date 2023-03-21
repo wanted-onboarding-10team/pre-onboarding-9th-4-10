@@ -1,5 +1,5 @@
 import { MainLayout, OrderTable, Pagination, SearchInput } from 'components';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { OrderDataType } from 'types/order';
 import { Flex, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
@@ -25,11 +25,14 @@ const MainPage = () => {
   const [sortOption, setSortOption] = useState<SortOptionType>({ id: null, time: null });
   const [filterOption, setFilterOption] = useState<boolean | null>(null);
 
+  const [query] = useSearchParams();
+
   useEffect(() => {
     setOrderData(useIdSortOrder(orderData, sortOption.id));
   }, [sortOption.id]);
 
   useEffect(() => {
+    setCurrentPage(1);
     setOrderData(useTimeSortOrder(orderData, sortOption.time));
   }, [sortOption.time]);
 
@@ -37,13 +40,17 @@ const MainPage = () => {
     if (searchWord === '') {
       setCurrentPage(1);
     }
-
+    setCurrentPage(1);
     setOrderData(useFilterOrder(orderDataResponse, searchWord));
   }, [searchWord]);
 
   useEffect(() => {
     setOrderData(useStatusFilterOrder(orderDataResponse, filterOption));
   }, [filterOption]);
+
+  useEffect(() => {
+    query && setCurrentPage(Number(query.get('pages')));
+  }, []);
 
   return (
     <MainLayout>
