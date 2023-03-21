@@ -23,7 +23,7 @@ const OrderPage = () => {
   const selectedDate = searchParams.get('date') ?? '2023-03-08';
   const orderListsByDate = orderListsBytransactionDate[selectedDate];
 
-  const chageDate = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const changeDate = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSearchParams(searchParams => {
       searchParams.delete('page');
       searchParams.set('date', event.target.value);
@@ -53,7 +53,7 @@ const OrderPage = () => {
               <Text width={20} textAlign='right' pr={2}>
                 거래일 :
               </Text>
-              <Select maxWidth={150} onChange={chageDate} defaultValue={selectedDate}>
+              <Select maxWidth={150} onChange={changeDate} defaultValue={selectedDate}>
                 {existTransactionDates.map(date => (
                   <option key={date} value={date}>
                     {date}
