@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { search } from 'utils/api/Order';
+import { search } from 'utils/api';
 
 const useOrderData = () => {
   const [searchParams] = useSearchParams();
@@ -12,7 +12,9 @@ const useOrderData = () => {
   const name = searchParams.get('search') ?? '';
   const filter = searchParams.get('filter') ?? '';
 
-  const { isLoading, data: todayData } = useQuery(['todayData', keyword], () => search(keyword));
+  const { isLoading, data: todayData } = useQuery(['todayData', keyword], () => search(keyword), {
+    refetchInterval: 5000,
+  });
 
   useEffect(() => {
     if (name) return setKeyword(name);
