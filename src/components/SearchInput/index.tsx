@@ -7,8 +7,12 @@ interface SearchInputProps {
 
 const SearchInput = ({ onSearchWordChange }: SearchInputProps) => {
   return (
-    <Flex>
-      <Input placeholder='검색어를 입력하세요' onChange={e => onSearchWordChange(e.target.value)} />
+    <Flex width='1200px'>
+      <Input
+        placeholder='고객이름을 입력하세요'
+        onChange={e => onSearchWordChange(e.target.value)}
+        variant='flushed'
+      />
     </Flex>
   );
 };
