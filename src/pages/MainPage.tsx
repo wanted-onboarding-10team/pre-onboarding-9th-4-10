@@ -12,9 +12,12 @@ import {
 import { MAX_SIZE } from 'shared/Pagination';
 import { TODAY } from 'shared/Date';
 import { SortOptionType } from 'types/sort';
+import mainLoader from 'router/loader/mainLoader';
 
 const MainPage = () => {
-  const orderDataResponse = useLoaderData() as OrderDataType[];
+  const [orderDataResponse, setOrderDataResponse] = useState<OrderDataType[]>(
+    useLoaderData() as OrderDataType[],
+  );
   const [currentPage, setCurrentPage] = useState<number>(1);
   const startPage = MAX_SIZE * currentPage - MAX_SIZE;
   const finishPage = MAX_SIZE * currentPage;
@@ -49,8 +52,21 @@ const MainPage = () => {
   }, [filterOption]);
 
   useEffect(() => {
-    query && setCurrentPage(Number(query.get('pages')));
+    setCurrentPage(Number(query.get('pages')));
+
+    const intervalId = setInterval(async () => {
+      const data = await mainLoader();
+      setOrderDataResponse(data);
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
+
+  useEffect(() => {
+    setOrderData(orderDataResponse);
+  }, [orderDataResponse]);
 
   return (
     <MainLayout>
