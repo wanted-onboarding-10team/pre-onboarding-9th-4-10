@@ -9,14 +9,10 @@ import {
   useStatusFilterOrder,
   useTimeSortOrder,
 } from 'utils/hooks';
-import { SortType } from 'types/sort';
 import { MAX_SIZE } from 'shared/Pagination';
 import { TODAY } from 'shared/Date';
+import { SortOptionType } from 'types/sort';
 
-interface SortOptionType {
-  id: SortType;
-  time: SortType;
-}
 const MainPage = () => {
   const orderDataResponse = useLoaderData() as OrderDataType[];
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -34,25 +30,19 @@ const MainPage = () => {
   }, [sortOption.id]);
 
   useEffect(() => {
-    if (sortOption.time !== null) {
-      setOrderData(useTimeSortOrder(orderData, sortOption.time));
-    }
+    setOrderData(useTimeSortOrder(orderData, sortOption.time));
   }, [sortOption.time]);
 
   useEffect(() => {
     if (searchWord === '') {
       setCurrentPage(1);
-      setOrderData(orderDataResponse);
-      return;
     }
 
     setOrderData(useFilterOrder(orderDataResponse, searchWord));
   }, [searchWord]);
 
   useEffect(() => {
-    if (filterOption !== null) {
-      setOrderData(useStatusFilterOrder(orderDataResponse, filterOption));
-    }
+    setOrderData(useStatusFilterOrder(orderDataResponse, filterOption));
   }, [filterOption]);
 
   return (
@@ -65,60 +55,11 @@ const MainPage = () => {
 
       <SearchInput onSearchWordChange={setSearchWord} />
 
-      <Flex justifyContent='flex-end' width='1200px' gap='20px' fontSize='sm' fontWeight='900'>
-        <div>
-          <Text
-            color={sortOption.time === 'desc' ? 'blue.400' : 'gray.400'}
-            cursor='pointer'
-            onClick={() => setSortOption(prev => ({ ...prev, time: 'desc' }))}
-          >
-            최신순
-          </Text>
-          <Text
-            color={sortOption.time === 'asc' ? 'blue.400' : 'gray.400'}
-            cursor='pointer'
-            onClick={() => setSortOption(prev => ({ ...prev, time: 'asc' }))}
-          >
-            거래 시간 순
-          </Text>
-        </div>
-
-        <div>
-          <Text
-            color={sortOption.id === 'asc' ? 'blue.400' : 'gray.400'}
-            cursor='pointer'
-            onClick={() => setSortOption(prev => ({ ...prev, id: 'asc' }))}
-          >
-            번호 오름차순
-          </Text>
-          <Text
-            color={sortOption.id === 'desc' ? 'blue.400' : 'gray.400'}
-            cursor='pointer'
-            onClick={() => setSortOption(prev => ({ ...prev, id: 'desc' }))}
-          >
-            번호 내림차순
-          </Text>
-        </div>
-
-        <div>
-          <Text
-            color={filterOption ? 'blue.400' : 'gray.400'}
-            cursor='pointer'
-            onClick={() => setFilterOption(true)}
-          >
-            주문처리상태 O
-          </Text>
-          <Text
-            color={filterOption === false ? 'blue.400' : 'gray.400'}
-            cursor='pointer'
-            onClick={() => setFilterOption(false)}
-          >
-            주문처리상태 X
-          </Text>
-        </div>
-      </Flex>
-
-      <OrderTable data={orderData.slice(startPage, finishPage)} />
+      <OrderTable
+        data={orderData.slice(startPage, finishPage)}
+        setSortOption={setSortOption}
+        setFilterOption={setFilterOption}
+      />
 
       <Pagination
         currentPage={currentPage}
