@@ -24,7 +24,7 @@ const Filter = () => {
             <List onClick={() => handleFilter('true')}>주문 완료</List>
           </li>
           <li value='false'>
-            <List onClick={() => handleFilter('false')}>주문 전</List>
+            <List onClick={() => handleFilter('false')}>주문 진행 중</List>
           </li>
         </ListBox>
       )}

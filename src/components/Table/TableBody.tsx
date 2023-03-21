@@ -9,7 +9,7 @@ const TableBody = ({ order }: { order: OrderData }) => {
       <RowColumn>{order.customer_name}</RowColumn>
       <RowColumn>{order.currency}</RowColumn>
       <RowColumn>{order.transaction_time}</RowColumn>
-      <RowColumn>{order.status ? '주문 완료' : '주문 전'}</RowColumn>
+      <RowColumn>{order.status ? '✅ 주문 완료' : '❌ 주문 진행 중'}</RowColumn>
     </TableRow>
   );
 };
