@@ -2,6 +2,10 @@ import axios from 'axios';
 import { createToday, TodayDays } from 'utils/date';
 import { OrderData } from 'types';
 
+export const search = (keyword?: string) => {
+  return keyword ? getKeywordApi(keyword) : getTodayDataApi();
+};
+
 const getTodayDataApi = async () => {
   const response = await axios.get('/data/mock_data.json');
 
@@ -10,15 +14,6 @@ const getTodayDataApi = async () => {
     return TodayDays(createToday(), todayDate);
   });
   return filteredData;
-};
-
-export const search = (keyword?: string) => {
-  return keyword ? getKeywordApi(keyword) : getOrderApi();
-};
-
-const getOrderApi = async () => {
-  const onlyToday = await getTodayDataApi();
-  return onlyToday;
 };
 
 const getKeywordApi = async (keyword: string) => {
@@ -31,6 +26,6 @@ const getKeywordApi = async (keyword: string) => {
   }
 
   return filteredList.filter((i: OrderData) => {
-    if (i.customer_name.includes(keyword)) return i;
+    if (i.customer_name.toUpperCase().includes(keyword.toLocaleUpperCase())) return i;
   });
 };
