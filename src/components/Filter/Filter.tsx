@@ -14,7 +14,7 @@ const Filter = () => {
 
   return (
     <FilterBox>
-      <FilterSelect onClick={() => setClick(!click)}>주문 처리 상태</FilterSelect>
+      <FilterSelect onClick={() => setClick(!click)}>주문 처리 상태 ▼</FilterSelect>
       {click && (
         <ListBox>
           <li value='true'>
@@ -46,6 +46,7 @@ const FilterSelect = styled.button`
   background: #ffffff;
   appearance: none;
   text-align: center;
+  cursor: pointer;
 `;
 
 const ListBox = styled.ul`
@@ -67,7 +68,7 @@ const List = styled.button`
   padding: 7px 10px;
   margin: 5px 7px;
   box-sizing: border-box;
-  cursor:pointer;
+  cursor: pointer;
 
   &:focus {
       background: #f8e4ff;
