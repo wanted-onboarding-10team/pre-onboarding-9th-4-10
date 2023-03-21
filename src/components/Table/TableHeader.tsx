@@ -6,7 +6,7 @@ import { QUERY_KEY, SORT_TYPE } from 'constants/index';
 const TableHeader = () => {
   const handleQuery = useQuery();
 
-  const [params, _] = useSearchParams();
+  const [params] = useSearchParams();
 
   const sortType = params.get(QUERY_KEY.sort);
 
