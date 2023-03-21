@@ -1,11 +1,43 @@
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { OrderCategory } from 'types';
 
 const OrderTable = ({ orderList }: { orderList: OrderCategory[] | undefined }) => {
-  return (
+  const [query, setQuery] = useSearchParams();
+
+  const handleAlignQuery = (key: string) => {
+    const prevQuery = Array.from(query).reduce((prev: { [index: string]: string }, current) => {
+      prev[current[0]] = current[1];
+      return prev;
+    }, {});
+
+    if (prevQuery.align === key) {
+      delete prevQuery.align;
+    } else {
+      prevQuery.align = key;
+    }
+
+    setQuery(prevQuery);
+  };
+
+  return orderList?.length !== 0 ? (
     <Table>
       <Thead>
-        <Tr>{orderList && Object.keys(orderList[0]).map(key => <Td key={key}>{key}</Td>)}</Tr>
+        <Tr>
+          {orderList &&
+            Object.keys(orderList[0]).map(key => {
+              if (key === 'id' || key === 'transaction_time') {
+                return (
+                  <Td onClick={() => handleAlignQuery(key)} key={key} aligns={true}>
+                    {key}
+                    {query.get('align') === key ? '▼' : '▲'}
+                  </Td>
+                );
+              } else {
+                return <Td key={key}>{key}</Td>;
+              }
+            })}
+        </Tr>
       </Thead>
       <tbody>
         {orderList &&
@@ -21,6 +53,8 @@ const OrderTable = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
           ))}
       </tbody>
     </Table>
+  ) : (
+    <div>결과가없습니다</div>
   );
 };
 
@@ -28,6 +62,8 @@ export default OrderTable;
 
 const Table = styled.table`
   border: 1px solid black;
+  width: 100%;
+  text-align: center;
 `;
 
 const Thead = styled.thead`
@@ -35,12 +71,12 @@ const Thead = styled.thead`
 `;
 
 const Tr = styled.tr`
-  padding: 5px;
   border-bottom: 1px solid black;
 `;
 
-const Td = styled.td`
-  padding: 5px;
+const Td = styled.td<{ aligns?: boolean }>`
+  padding: 5px 0;
+  cursor: ${props => props.aligns && 'pointer'};
   & + & {
     border-left: 1px solid black;
   }
