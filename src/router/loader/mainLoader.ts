@@ -8,6 +8,7 @@ const mainLoader = async () => {
       ...item,
       transaction_date: item.transaction_time.split(' ')[0],
       transaction_time: item.transaction_time.split(' ')[1],
+      time: item.transaction_time.split(' ')[1].replace(/:/gi, ''),
     };
   });
   console.log(data);

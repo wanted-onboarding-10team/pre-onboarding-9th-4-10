@@ -2,6 +2,7 @@ export interface Data {
   id: number;
   transaction_date: string;
   transaction_time: string;
+  time: number;
   status: boolean;
   customer_id: number;
   customer_name: string;

@@ -6,16 +6,38 @@ import { DatePicker, Space } from 'antd';
 
 import { Table } from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
+import { text } from 'stream/consumers';
 
 const OrderListPage = () => {
   const data = useLoaderData() as Data[];
   //   console.log(data);
 
   const columns: ColumnsType<Data> = [
-    { title: '주문번호', dataIndex: 'id', key: 'id', sorter: true },
+    {
+      title: '주문번호',
+      dataIndex: 'id',
+      key: 'id',
+      sorter: (a, b) => a.id - b.id,
+      defaultSortOrder: 'ascend',
+    },
     { title: '거래일자', dataIndex: 'transaction_date', key: 'transaction_date' },
-    { title: '거래시간', dataIndex: 'transaction_time', key: 'transaction_time', sorter: true },
-    { title: '주문처리상태', dataIndex: 'status', key: 'status' },
+    {
+      title: '거래시간',
+      dataIndex: 'transaction_time',
+      key: 'time',
+      sorter: (a, b) => a.time - b.time,
+    },
+    {
+      title: '주문처리상태',
+      dataIndex: 'status',
+      key: 'status',
+      render: val => (val ? <a>완료</a> : ''),
+      filters: [
+        { text: '완료', value: true },
+        { text: '미완', value: false },
+      ],
+      onFilter: (value, record): boolean => record.status === value,
+    },
     { title: '고객번호', dataIndex: 'customer_id', key: 'customer_id' },
     { title: '고객이름', dataIndex: 'customer_name', key: 'customer_name' },
     { title: '가격', dataIndex: 'currency', key: 'currency' },
