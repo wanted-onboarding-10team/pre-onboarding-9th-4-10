@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { DataResponse } from 'types';
+import { Tag } from '@chakra-ui/react';
 
 function useColums() {
   const columnHelper = createColumnHelper<DataResponse>();
@@ -25,7 +26,11 @@ function useColums() {
       }),
       columnHelper.accessor('status', {
         header: '주문 처리 상태',
-        cell: info => info.getValue().toString(),
+        cell: info => (
+          <Tag size='md' colorScheme={info.getValue() ? 'green' : 'red'}>
+            {info.getValue().toString()}
+          </Tag>
+        ),
       }),
       columnHelper.accessor('transaction_time', {
         id: 'date',
