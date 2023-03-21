@@ -14,7 +14,7 @@ const useQuery = () => {
       handleQuery('page', '1');
       handleQuery('sort', 'id:asc');
     }
-  }, []);
+  }, [searchParams]);
 
   return handleQuery;
 };
