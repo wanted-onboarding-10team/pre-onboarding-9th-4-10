@@ -6,15 +6,14 @@ import {
   MenuButton,
   MenuList,
   IconButton,
-  Button,
   Input,
   HStack,
   MenuOptionGroup,
   MenuItemOption,
-  MenuDivider,
 } from '@chakra-ui/react';
 import { CustomTextBtn } from 'components/common/CustomTextBtn';
 import { DataResponse } from 'types';
+import * as S from './styles';
 
 const SearchMenu = ({
   header,
@@ -43,11 +42,17 @@ const SearchMenu = ({
     <Menu closeOnSelect={false}>
       <CustomTextBtn>
         <>{header.column.columnDef.header}</>
-        <MenuButton as={IconButton} aria-label='Options' icon={<SearchIcon />} variant='outline' />
+        <MenuButton
+          as={IconButton}
+          aria-label='Options'
+          icon={<SearchIcon />}
+          variant='outline'
+          marginLeft='3'
+        />
       </CustomTextBtn>
 
       {typeof firstValue === 'string' ? (
-        <MenuList padding={'3'}>
+        <MenuList padding='3'>
           <datalist id={column.id + 'list'}>
             {sortedUniqueValues.slice(0, 5000).map((value: typeof firstValue) => (
               <option value={value} key={'option' + value} />
@@ -63,19 +68,15 @@ const SearchMenu = ({
                 onChange={e => setSearchValue(e.target.value)}
               />
 
-              <Button variant='outline' type='submit'>
-                검색
-              </Button>
-              <Button variant='outline' onClick={() => column.setFilterValue('')}>
-                초기화
-              </Button>
+              <S.CustomBtn type='submit'>검색</S.CustomBtn>
+              <S.CustomBtn onClick={() => column.setFilterValue('')}>초기화</S.CustomBtn>
             </HStack>
           </form>
         </MenuList>
       ) : (
-        <MenuList padding={'3'}>
+        <MenuList padding='3'>
           <MenuOptionGroup
-            defaultValue={'ALL'}
+            defaultValue='ALL'
             type='radio'
             onChange={val => {
               val === 'true'
@@ -88,15 +89,15 @@ const SearchMenu = ({
             {sortedUniqueValues.slice(0, 5000).map((value: string) => (
               <MenuItemOption
                 minH='35px'
-                fontSize={'md'}
-                fontWeight={'bold'}
+                fontSize='md'
+                fontWeight='bold'
                 value={value.toString()}
                 key={'status key' + value.toString()}
               >
                 {value.toString()}
               </MenuItemOption>
             ))}
-            <MenuItemOption value='ALL' minH='35px' fontSize={'md'} fontWeight={'bold'}>
+            <MenuItemOption minH='35px' fontSize='md' fontWeight='bold' value='ALL'>
               ALL
             </MenuItemOption>
           </MenuOptionGroup>
