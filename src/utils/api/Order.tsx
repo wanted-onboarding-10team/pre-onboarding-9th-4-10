@@ -23,6 +23,13 @@ const getOrderApi = async () => {
 
 const getKeywordApi = async (keyword: string) => {
   const filteredList = await getTodayDataApi();
+
+  if (keyword === 'true' || keyword === 'false') {
+    return filteredList.filter((i: OrderData) => {
+      if (i.status === Boolean(keyword === 'false' ? '' : keyword)) return i;
+    });
+  }
+
   return filteredList.filter((i: OrderData) => {
     if (i.customer_name.includes(keyword)) return i;
   });

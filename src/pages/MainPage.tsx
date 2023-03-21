@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Table, Search, Pagination, Header, Loading } from 'components';
-import { usePageData, useOrderData } from 'hooks';
+import { Header, Loading, Filter, Pagination, Search, Table } from 'components';
+import { useOrderData, usePageData } from 'hooks';
 
 const MainPage = () => {
   const { pages, paginatedData } = usePageData();
@@ -13,7 +13,10 @@ const MainPage = () => {
   return (
     <MainLayout>
       <Header />
-      <Search />
+      <Layout>
+        <Search />
+        <Filter />
+      </Layout>
       <Table paginatedData={paginatedData} />
       <Pagination pages={pages} />
     </MainLayout>
@@ -24,7 +27,13 @@ export default MainPage;
 
 const MainLayout = styled.div`
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
   align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+`;
+
+const Layout = styled.div`
+  display: flex;
 `;
