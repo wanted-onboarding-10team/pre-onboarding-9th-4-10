@@ -21,7 +21,13 @@ const Search = () => {
         placeholder='고객이름을 입력해주세요.'
         onChange={handleChange}
       />
-      <Button type='button' onClick={() => handleQuery('search', text)}>
+      <Button
+        type='button'
+        onClick={() => {
+          handleQuery('search', text);
+          setText('');
+        }}
+      >
         검색
       </Button>
     </SearchBox>
