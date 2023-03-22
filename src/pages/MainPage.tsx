@@ -6,14 +6,14 @@ import CustomSkeleton from 'components/common/CustomSkeleton';
 import MainTable from 'components/MainTable';
 
 const MainPage = () => {
-  const { data: orders, isLoading, status, isFetching } = useOrderList();
+  const { data: orders, isLoading } = useOrderList();
   const columns = useColums();
   const data = useMemo(() => orders, [orders]);
 
-  if (isLoading || !data || isFetching) return <CustomSkeleton />;
+  if (isLoading || !data) return <CustomSkeleton />;
 
   return (
-    <LayoutWrapper padding={'2vw'}>
+    <LayoutWrapper>
       <MainTable
         {...{
           data,

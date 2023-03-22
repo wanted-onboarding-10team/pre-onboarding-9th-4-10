@@ -5,6 +5,7 @@ function useOrderList() {
   const res = useQuery({
     queryKey: ['orderList'],
     queryFn: getOrderListDataApi,
+    refetchInterval: 5000,
   });
 
   return res;
