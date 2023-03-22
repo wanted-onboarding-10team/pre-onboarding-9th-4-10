@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { useQuery } from 'hooks';
 import { QUERY_KEY, SORT_TYPE } from 'constants/index';
+import * as S from 'styles/TableStyle';
 
 const TableHeader = () => {
   const handleQuery = useQuery();
@@ -27,37 +27,21 @@ const TableHeader = () => {
   };
 
   return (
-    <TableHeaderBox>
+    <S.TableHeader>
       <tr>
-        <HeaderColumn className='sort' onClick={onClickSortById}>
+        <S.HeaderColumn className='sort' onClick={onClickSortById}>
           {sortType?.includes('id:desc') ? '주문번호▼' : '주문번호▲'}
-        </HeaderColumn>
-        <HeaderColumn>고객번호</HeaderColumn>
-        <HeaderColumn>고객명</HeaderColumn>
-        <HeaderColumn>가격</HeaderColumn>
-        <HeaderColumn className='sort' onClick={onClickSortByTime}>
+        </S.HeaderColumn>
+        <S.HeaderColumn>고객번호</S.HeaderColumn>
+        <S.HeaderColumn>고객명</S.HeaderColumn>
+        <S.HeaderColumn>가격</S.HeaderColumn>
+        <S.HeaderColumn className='sort' onClick={onClickSortByTime}>
           {sortType?.includes('time:desc') ? '거래일 & 거래시간▼' : '거래일 & 거래시간▲'}
-        </HeaderColumn>
-        <HeaderColumn>주문 처리 상태</HeaderColumn>
+        </S.HeaderColumn>
+        <S.HeaderColumn>주문 처리 상태</S.HeaderColumn>
       </tr>
-    </TableHeaderBox>
+    </S.TableHeader>
   );
 };
 
 export default TableHeader;
-
-const TableHeaderBox = styled.thead`
-  position: sticky;
-  top: 0;
-  background-color: #efefef;
-`;
-
-const HeaderColumn = styled.th`
-  padding: 12px;
-  font-weight: bold;
-  font-size: 20px;
-
-  &.sort {
-    cursor: pointer;
-  }
-`;

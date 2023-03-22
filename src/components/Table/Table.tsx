@@ -1,23 +1,17 @@
-import styled from 'styled-components';
 import { TableHeader, TableBody } from 'components';
 import { OrderData } from 'types';
+import * as S from 'styles/TableStyle';
 
 const Table = ({ paginatedData }: { paginatedData?: OrderData[] }) => {
   return (
-    <TableBox>
+    <S.Table>
       <TableHeader />
       <tbody>
         {paginatedData?.map((order: OrderData) => {
           return <TableBody order={order} key={order.id} />;
         })}
       </tbody>
-    </TableBox>
+    </S.Table>
   );
 };
 export default Table;
-
-const TableBox = styled.table`
-  width: 800px;
-  background-color: #efefef;
-  color: #212529;
-`;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { useQuery } from 'hooks';
+import * as S from 'styles/SearchStyle';
 
 const Search = () => {
   const handleQuery = useQuery();
@@ -12,8 +12,8 @@ const Search = () => {
   };
 
   return (
-    <SearchBox>
-      <Input
+    <S.SearchForm>
+      <S.SearchInput
         type='text'
         name='search'
         value={text}
@@ -21,7 +21,7 @@ const Search = () => {
         placeholder='고객이름을 입력해주세요.'
         onChange={handleChange}
       />
-      <Button
+      <S.SearchBtn
         type='button'
         onClick={() => {
           handleQuery('search', text);
@@ -29,31 +29,8 @@ const Search = () => {
         }}
       >
         검색
-      </Button>
-    </SearchBox>
+      </S.SearchBtn>
+    </S.SearchForm>
   );
 };
 export default Search;
-
-const SearchBox = styled.form`
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-`;
-
-const Input = styled.input`
-  height: 10px;
-  width: 200px;
-  border: 1px solid #e0e0e0;
-  padding: 15px;
-  margin-right: 15px;
-`;
-
-const Button = styled.button`
-  border: 1px solid #e0e0e0;
-  padding: 10px;
-  background: #000;
-  color: #fff;
-  cursor: pointer;
-  font-weight: 600;
-`;
