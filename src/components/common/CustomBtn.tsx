@@ -7,6 +7,8 @@ import {
   IconButtonProps,
   MenuItemOption,
   MenuItemOptionProps,
+  Tag,
+  TagProps,
 } from '@chakra-ui/react';
 
 export const TextBtn = (props: BoxProps) => {
@@ -31,8 +33,14 @@ export const MenuItem = (props: MenuItemOptionProps) => (
   </MenuItemOption>
 );
 
-export const Btn = (props: ButtonProps) => (
+export const OutlinBtn = (props: ButtonProps) => (
   <Button variant='outline' {...props}>
     {props.children}
   </Button>
+);
+
+export const TagGray = (props: TagProps) => (
+  <Tag fontSize='md' padding='5 1' color='gray.500' {...props}>
+    {props.children}
+  </Tag>
 );
