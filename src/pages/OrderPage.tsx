@@ -10,6 +10,9 @@ const OrderPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const init: { [key: string]: Order[] } = {};
 
+  // TODO: '2023-03-08' 하드코딩 제거
+  const selectedDate = searchParams.get('date') ?? '2023-03-08';
+
   const orderListsBytransactionDate = data
     ? data.reduce((prev, curr) => {
         const dateTime = curr.transaction_time.split(' ');
@@ -18,10 +21,11 @@ const OrderPage = () => {
         return prev;
       }, init)
     : {};
+
   const existTransactionDates = Object.keys(orderListsBytransactionDate).sort();
-  // TODO: '2023-03-08' 하드코딩 제거
-  const selectedDate = searchParams.get('date') ?? '2023-03-08';
-  const orderListsByDate = orderListsBytransactionDate[selectedDate];
+  const orderListsByDate = existTransactionDates.includes(selectedDate)
+    ? orderListsBytransactionDate[selectedDate]
+    : [];
 
   const changeDate = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSearchParams(searchParams => {
@@ -54,6 +58,7 @@ const OrderPage = () => {
                 거래일 :
               </Text>
               <Select maxWidth={150} onChange={changeDate} defaultValue={selectedDate}>
+                <option value=''>거래일</option>
                 {existTransactionDates.map(date => (
                   <option key={date} value={date}>
                     {date}
