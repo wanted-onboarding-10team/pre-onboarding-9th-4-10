@@ -1,76 +1,89 @@
+import { Table } from '@tanstack/react-table';
+import { Select, HStack, Box, Tag, VStack } from '@chakra-ui/react';
+import {
+  LeftArrowOnceIcon,
+  LeftArrowTwice,
+  RightArrowTwiceIcon,
+  RightArrowOnceIcon,
+} from 'components/common/CreateSVGIcon';
+import * as Custom from 'components/common/CustomBtn';
 import { DataResponse } from 'types';
-import { ColumnDef, Table } from '@tanstack/react-table';
-import { Button, Select, Input, HStack, Box, Text } from '@chakra-ui/react';
 
-const PagenationBar = ({
-  data,
-  columns,
-  table,
-}: {
-  data: DataResponse[];
-  columns: ColumnDef<DataResponse, any>[];
-  table: Table<DataResponse>;
-}) => {
+const PagenationBar = ({ table }: { table: Table<DataResponse> }) => {
+  const { pageIndex } = table.getState().pagination;
+  const pageCount = table.getPageCount();
+  const maxPageIdx = pageCount - 1;
+
+  const onNextPageHandler = () => {
+    pageIndex < maxPageIdx ? table.nextPage() : table.setPageIndex(maxPageIdx);
+  };
+
   return (
     <>
-      <HStack>
-        <Text fontSize={'2xl'}>
-          <strong>Today : 2023-03-08 </strong>
-        </Text>
-        <Button onClick={() => table.setColumnFilters([{ id: 'date', value: '2023-03-08' }])}>
-          모든 필터 초기화
-        </Button>
-      </HStack>
-      <Button onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
-        {'<<'}
-      </Button>
-      <Button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-        {'<'}
-      </Button>
-      <Button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-        {'>'}
-      </Button>
-      <Button
-        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-        disabled={!table.getCanNextPage()}
-      >
-        {'>>'}
-      </Button>
-      <HStack flexDir={'row'} justifyContent='space-around'>
-        <Box maxW={'100px'}>
-          <Text>
-            Page
+      <HStack flexDir='row' justifyContent='space-around'>
+        <VStack align='center'>
+          <HStack gap='1'>
+            <Custom.IconBtn
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+              aria-label=''
+              icon={<LeftArrowTwice minW='50px' />}
+            />
+            <Custom.IconBtn
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              aria-label=''
+              icon={<LeftArrowOnceIcon />}
+            />
             <strong>
-              {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+              {pageIndex + 1} / {pageCount}
             </strong>
-            <span>
-              | Go to page:
-              <Input
-                type='number'
-                defaultValue={table.getState().pagination.pageIndex + 1}
-                onChange={e => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                  table.setPageIndex(page);
-                }}
-              />
-            </span>
-          </Text>
-        </Box>
-
-        <Select
-          maxW={'150px'}
-          value={table.getState().pagination.pageSize}
-          onChange={e => {
-            table.setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map(pageSize => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </Select>
-        <span>{table.getRowModel().rows.length} Rows</span>
+            <Custom.IconBtn
+              onClick={() => onNextPageHandler()}
+              disabled={!table.getCanNextPage()}
+              aria-label=''
+              icon={<RightArrowOnceIcon />}
+            />
+            <Custom.IconBtn
+              onClick={() => table.setPageIndex(maxPageIdx)}
+              disabled={!table.getCanNextPage()}
+              aria-label=''
+              icon={<RightArrowTwiceIcon minW='50px' />}
+            />
+          </HStack>
+          <HStack>
+            {[...new Array(pageCount)].map(
+              (e, idx) =>
+                idx < 6 && (
+                  <Tag
+                    key={idx}
+                    onClick={() => table.setPageIndex(idx)}
+                    cursor='pointer'
+                    bg={pageIndex === idx ? 'gray.300' : 'gray.100'}
+                  >
+                    {idx + 1}
+                  </Tag>
+                ),
+            )}
+          </HStack>
+        </VStack>
+        <Box flex='1' />
+        <HStack gap='5px'>
+          <Select
+            maxW={'150px'}
+            value={table.getState().pagination.pageSize}
+            onChange={e => {
+              table.setPageSize(Number(e.target.value));
+            }}
+          >
+            {/* Visible Row Count Option */}
+            {[50].map(pageSize => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </Select>
+        </HStack>
       </HStack>
     </>
   );

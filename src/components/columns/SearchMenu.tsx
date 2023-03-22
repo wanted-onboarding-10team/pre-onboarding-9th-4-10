@@ -11,9 +11,8 @@ import {
   MenuOptionGroup,
   MenuItemOption,
 } from '@chakra-ui/react';
-import { CustomTextBtn } from 'components/common/CustomTextBtn';
+import * as Custom from 'components/common/CustomBtn';
 import { DataResponse } from 'types';
-import * as S from './styles';
 
 const SearchMenu = ({
   header,
@@ -38,25 +37,34 @@ const SearchMenu = ({
     column.setFilterValue(searchValue);
   };
 
+  const onFilterinitialization = () => {
+    setSearchValue('');
+    column.setFilterValue('');
+  };
+
   return (
     <Menu closeOnSelect={false}>
-      <CustomTextBtn>
+      <Custom.TextBtn>
         <>{header.column.columnDef.header}</>
         <MenuButton
           as={IconButton}
           aria-label='Options'
+          size='sm'
+          marginBottom='1'
           icon={<SearchIcon />}
           variant='outline'
           marginLeft='3'
         />
-      </CustomTextBtn>
+      </Custom.TextBtn>
 
       {typeof firstValue === 'string' ? (
         <MenuList padding='3'>
           <datalist id={column.id + 'list'}>
-            {sortedUniqueValues.slice(0, 5000).map((value: typeof firstValue) => (
-              <option value={value} key={'option' + value} />
-            ))}
+            {sortedUniqueValues
+              .slice(0, sortedUniqueValues.length - 1)
+              .map((value: typeof firstValue) => (
+                <option value={value} key={'option' + value} />
+              ))}
           </datalist>
           <form onSubmit={e => searchBtnHandler(e)}>
             <HStack>
@@ -68,8 +76,8 @@ const SearchMenu = ({
                 onChange={e => setSearchValue(e.target.value)}
               />
 
-              <S.CustomBtn type='submit'>검색</S.CustomBtn>
-              <S.CustomBtn onClick={() => column.setFilterValue('')}>초기화</S.CustomBtn>
+              <Custom.Btn type='submit'>검색</Custom.Btn>
+              <Custom.Btn onClick={onFilterinitialization}>초기화</Custom.Btn>
             </HStack>
           </form>
         </MenuList>
