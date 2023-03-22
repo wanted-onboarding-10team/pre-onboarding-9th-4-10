@@ -1,5 +1,5 @@
 import { Table } from '@tanstack/react-table';
-import { Select, HStack, Box, Tag, VStack } from '@chakra-ui/react';
+import { Select, HStack, Box, Tag, VStack, Button } from '@chakra-ui/react';
 import {
   LeftArrowOnceIcon,
   LeftArrowTwice,
@@ -9,7 +9,13 @@ import {
 import * as Custom from 'components/common/CustomBtn';
 import { DataResponse } from 'types';
 
-const PagenationBar = ({ table }: { table: Table<DataResponse> }) => {
+const PagenationBar = ({
+  table,
+  onResetFilterHandler,
+}: {
+  table: Table<DataResponse>;
+  onResetFilterHandler: () => void;
+}) => {
   const { pageIndex } = table.getState().pagination;
   const pageCount = table.getPageCount();
   const maxPageIdx = pageCount - 1;
@@ -55,19 +61,26 @@ const PagenationBar = ({ table }: { table: Table<DataResponse> }) => {
             {[...new Array(pageCount)].map(
               (e, idx) =>
                 idx < 6 && (
-                  <Tag
+                  <Custom.TagGray
+                    fontWeight='bold'
                     key={idx}
                     onClick={() => table.setPageIndex(idx)}
                     cursor='pointer'
                     bg={pageIndex === idx ? 'gray.300' : 'gray.100'}
                   >
                     {idx + 1}
-                  </Tag>
+                  </Custom.TagGray>
                 ),
             )}
           </HStack>
         </VStack>
         <Box flex='1' />
+        <HStack>
+          <Box flex='1' />
+          <Button onClick={() => onResetFilterHandler()} color='gray.500' fontWeight='bold'>
+            모든 필터 초기화
+          </Button>
+        </HStack>
         <HStack gap='5px'>
           <Select
             maxW={'150px'}
