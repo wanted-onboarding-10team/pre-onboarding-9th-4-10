@@ -7,10 +7,10 @@ import { OrderData } from 'types';
 const usePageData = () => {
   const { pageList, setPageList } = useOrderData();
 
-  const [searchParams] = useSearchParams();
+  const [params] = useSearchParams();
 
-  const page = Number(searchParams.get(QUERY_KEY.page)) || 1;
-  const sort = searchParams.get(QUERY_KEY.sort) || '';
+  const page = Number(params.get(QUERY_KEY.page)) || 1;
+  const sort = params.get(QUERY_KEY.sort) || '';
 
   const handleSortById = useCallback((order: string) => {
     setPageList(prev => {

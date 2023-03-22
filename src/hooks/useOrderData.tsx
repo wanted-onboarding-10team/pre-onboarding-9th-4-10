@@ -4,13 +4,13 @@ import { useQuery } from 'react-query';
 import { search } from 'utils/api';
 
 const useOrderData = () => {
-  const [searchParams] = useSearchParams();
+  const [params] = useSearchParams();
 
   const [keyword, setKeyword] = useState('');
   const [pageList, setPageList] = useState([]);
 
-  const name = searchParams.get('search') ?? '';
-  const filter = searchParams.get('filter') ?? '';
+  const name = params.get('search') ?? '';
+  const filter = params.get('filter') ?? '';
 
   const { isLoading, data: todayData } = useQuery(['todayData', keyword], () => search(keyword), {
     refetchInterval: 5000,
@@ -20,7 +20,7 @@ const useOrderData = () => {
     if (name) return setKeyword(name);
     if (filter) return setKeyword(filter);
     setKeyword('');
-  }, [searchParams, name, filter]);
+  }, [params, name, filter]);
 
   useEffect(() => {
     if (todayData) {
