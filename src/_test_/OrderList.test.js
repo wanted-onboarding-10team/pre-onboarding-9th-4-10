@@ -1,7 +1,7 @@
 import { fireEvent, queryAllByRole, render, screen } from '@testing-library/react';
 import OrderList from 'components/order/OrderList';
-import { OrderDatas } from 'mocks/data/OrderDatas';
 import { BrowserRouter } from 'react-router-dom';
+import { OrderDatas } from '_mocks_/data/OrderDatas';
 
 describe('<OrderList />', () => {
   describe('주문 목록이 없을 경우', () => {
