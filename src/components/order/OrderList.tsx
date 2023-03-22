@@ -34,7 +34,8 @@ const OrderList = ({ orderLists }: OrderListParam) => {
   });
 
   const totalOrders = viewDatas ? viewDatas.length - 1 : 0;
-  const maxIndex = Math.floor(totalOrders / pageSize) - 1;
+  const maxIndex =
+    Math.floor(totalOrders / pageSize) - 1 > 0 ? Math.floor(totalOrders / pageSize) - 1 : 0;
   const pagingIndex = parseInt(searchParams.get('page') ?? '1') - 1;
 
   const setSortKey = (key: string) => {
