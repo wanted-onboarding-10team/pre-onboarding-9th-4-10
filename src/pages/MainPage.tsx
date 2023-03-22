@@ -6,7 +6,7 @@ import CustomSkeleton from 'components/common/CustomSkeleton';
 import MainTable from 'components/MainTable';
 
 const MainPage = () => {
-  const { data: orders, isLoading } = useOrderList();
+  const { data: orders, isLoading, dataUpdatedAt } = useOrderList();
   const columns = useColums();
   const data = useMemo(() => orders, [orders]);
 
@@ -18,6 +18,7 @@ const MainPage = () => {
         {...{
           data,
           columns,
+          dataUpdatedAt,
         }}
       />
     </LayoutWrapper>
