@@ -13,7 +13,9 @@ const filterDatasByStatus = (datas: Order[], filter: string | null) => {
 };
 
 const searchDatasByCustomerName = (datas: Order[], search: string | null) => {
-  return search !== null ? datas.filter(order => order.customer_name === search) : datas;
+  return search !== null
+    ? datas.filter(order => order.customer_name.toLowerCase().includes(search.trim().toLowerCase()))
+    : datas;
 };
 
 const pageSize = 50;
