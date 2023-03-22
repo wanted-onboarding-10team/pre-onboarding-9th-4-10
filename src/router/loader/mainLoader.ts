@@ -18,6 +18,6 @@ const mainLoader = async () => {
     console.error(error);
   }
 };
-setInterval(mainLoader, 5000);
+setInterval(mainLoader, 50000);
 
 export default mainLoader;

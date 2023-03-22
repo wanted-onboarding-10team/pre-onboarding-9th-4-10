@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useLoaderData } from 'react-router-dom';
-import { Data, TableColums } from 'types/types';
+import { Data } from 'types/types';
 
 import type { DatePickerProps } from 'antd';
 import { DatePicker } from 'antd';
@@ -8,14 +8,12 @@ import { DatePicker } from 'antd';
 import { Button, Input, Space, Table, InputRef } from 'antd';
 import type { ColumnsType, ColumnType, TableProps } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
-import { text } from 'stream/consumers';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import dayjs from 'dayjs';
 
 const OrderListPage = () => {
   const data = useLoaderData() as Data[];
-  //   console.log(data);
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -24,7 +22,6 @@ const OrderListPage = () => {
   const [selectDate, setSelectDate] = useState('2023-03-08');
 
   const selecetedData = data.filter(item => item.transaction_date === selectDate);
-  console.log(selecetedData);
 
   type DataIndex = keyof Data;
 
