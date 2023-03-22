@@ -1,9 +1,9 @@
-import React from 'react';
-import SearchMenu from './SearchMenu';
-import { CustomTextBtn } from 'components/common/CustomTextBtn';
-import { DataResponse } from 'types';
+import * as Custom from 'components/common/CustomBtn';
 import { flexRender, Header, Table } from '@tanstack/react-table';
 import { Th } from '@chakra-ui/react';
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { DataResponse } from 'types';
+import SearchMenu from './SearchMenu';
 
 interface TableProps {
   headers: Header<DataResponse, unknown>[];
@@ -20,23 +20,24 @@ const ColumnsHeaderFilter = ({ headers, table }: TableProps) => {
               {header.isPlaceholder ? null : (
                 <>
                   {header.id === 'id' || header.id === 'time' ? (
-                    <CustomTextBtn
+                    <Custom.TextBtn
                       {...{
+                        cursor: 'pointer',
                         onClick: header.column.getToggleSortingHandler(),
                       }}
                     >
                       {flexRender(header.column.columnDef.header, header.getContext())}
                       {{
-                        asc: '🔼',
-                        desc: '🔽',
-                      }[header.column.getIsSorted() as string] ?? null}
-                    </CustomTextBtn>
+                        asc: <ChevronUpIcon />,
+                        desc: <ChevronDownIcon />,
+                      }[header.column.getIsSorted() as string] ?? ' -'}
+                    </Custom.TextBtn>
                   ) : header.id === 'customer_name' || header.id === 'status' ? (
                     <SearchMenu header={header} column={header.column} table={table} />
                   ) : (
-                    <CustomTextBtn>
+                    <Custom.TextBtn>
                       {flexRender(header.column.columnDef.header, header.getContext())}
-                    </CustomTextBtn>
+                    </Custom.TextBtn>
                   )}
                 </>
               )}

@@ -1,5 +1,4 @@
 import { Box, BoxProps, Center, Flex } from '@chakra-ui/react';
-import { ReactNode } from 'react';
 
 const LayoutWrapper = (props: BoxProps) => {
   return (
@@ -7,8 +6,8 @@ const LayoutWrapper = (props: BoxProps) => {
       <Center>
         <Box
           marginTop={100}
-          minW='70vw'
-          maxH='80vh'
+          width='70vw'
+          height='80vh'
           borderWidth='1px'
           borderRadius='2xl'
           shadow='1px 1px 8px  #8686868f'

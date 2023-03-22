@@ -11,15 +11,12 @@ import {
   HStack,
   Text,
   Button,
-  Input,
-  Select,
 } from '@chakra-ui/react';
-import { DataResponse } from 'types';
 import useTable from 'hooks/useTable';
-import * as S from './columns/styles';
-import ColumnsHeaderFilter from './columns/ColumnsHeader';
-import PagenationBar from './columns/PagenationBar';
-
+import * as S from 'components/styles';
+import ColumnsHeaderFilter from 'components/columns/ColumnsHeaderFilter';
+import PagenationBar from 'components/columns/PagenationBar';
+import { DataResponse } from 'types';
 interface MainTableProps {
   data: DataResponse[];
   columns: ColumnDef<DataResponse, any>[];
@@ -37,38 +34,49 @@ const MainTable = ({ data, columns }: MainTableProps) => {
   }, []);
 
   return (
-    <TableContainer overflow='hidden' test-id='Table-Container'>
-      <PagenationBar data={data} columns={columns} table={table} />
-      <Box overflowY='auto' maxHeight='60vh'>
-        <S.StyleAlineTd>
-          <ChakraTable colorScheme='gray'>
-            <Thead>
-              {table.getHeaderGroups().map(headerGroup => (
-                <Tr key={headerGroup.id}>
-                  <ColumnsHeaderFilter headers={headerGroup.headers} table={table} />
-                </Tr>
-              ))}
-            </Thead>
-            <Tbody>
-              {table.getRowModel().rows.map(row => (
-                <Tr key={row.id}>
-                  {row
-                    .getVisibleCells()
-                    .map(
-                      cell =>
-                        !cell.id.includes('date') && (
-                          <Td key={cell.id}>
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                          </Td>
-                        ),
-                    )}
-                </Tr>
-              ))}
-            </Tbody>
-          </ChakraTable>
-        </S.StyleAlineTd>
-      </Box>
-    </TableContainer>
+    <>
+      <HStack>
+        <Text fontSize={'2xl'} marginBottom='5'>
+          <strong>Today : 2023-03-08 </strong>
+        </Text>
+        <Box flex='1' />
+        <Button onClick={() => table.setColumnFilters([{ id: 'date', value: '2023-03-08' }])}>
+          모든 필터 초기화
+        </Button>
+      </HStack>
+      <TableContainer overflow='hidden' test-id='Table-Container'>
+        <PagenationBar table={table} />
+        <Box overflowY='auto' height='60vh'>
+          <S.StyleAlineTd>
+            <ChakraTable colorScheme='gray'>
+              <Thead>
+                {table.getHeaderGroups().map(headerGroup => (
+                  <Tr key={headerGroup.id}>
+                    <ColumnsHeaderFilter headers={headerGroup.headers} table={table} />
+                  </Tr>
+                ))}
+              </Thead>
+              <Tbody>
+                {table.getRowModel().rows.map(row => (
+                  <Tr key={row.id}>
+                    {row
+                      .getVisibleCells()
+                      .map(
+                        cell =>
+                          !cell.id.includes('date') && (
+                            <Td key={cell.id}>
+                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </Td>
+                          ),
+                      )}
+                  </Tr>
+                ))}
+              </Tbody>
+            </ChakraTable>
+          </S.StyleAlineTd>
+        </Box>
+      </TableContainer>
+    </>
   );
 };
 
