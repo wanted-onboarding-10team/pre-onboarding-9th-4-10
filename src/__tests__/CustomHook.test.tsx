@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import useQuery from 'hooks/useQuery';
+import { useQuery } from 'hooks';
 import mockData from '../../public/data/mock_data.json';
 import axios from 'axios';
 

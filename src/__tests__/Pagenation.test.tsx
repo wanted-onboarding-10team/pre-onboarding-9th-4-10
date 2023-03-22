@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react';
-import Pagenation from 'components/table/Pagenation';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import { Pagenation } from 'components';
 import mockData from '../../public/data/mock_data.json';
 
 test('페이지네이션 테스트', async () => {
