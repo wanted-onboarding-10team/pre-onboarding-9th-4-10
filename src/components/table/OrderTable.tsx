@@ -40,10 +40,10 @@ const OrderTable = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
       <tbody>
         {orderList &&
           orderList.map(order => (
-            <Tr key={order.id}>
+            <Tr key={order.id} data-testid='table-rows'>
               {orderKeys.map(prop => {
                 return prop.displayType ? (
-                  <Td>{prop.displayType(order[prop.key])}</Td>
+                  <Td data-testid='table-row'>{prop.displayType(order[prop.key])}</Td>
                 ) : (
                   <Td>{order[prop.key]}</Td>
                 );
