@@ -16,7 +16,7 @@
 
 ### 배포 링크
 
-https://pre-onboarding-9th-3-10.vercel.app/
+https://pre-onboarding-9th-4-10.vercel.app/
 
 ### 실행 방법
 
@@ -65,16 +65,40 @@ $ npm start
 
 ```jsx
 📦
-├─ public
-│  ├─ data
+├─ public
+│  ├─ data 
+│  └─ └─ mock_data.json
 ├─ src
-│  ├─ assets
-│  ├─ components
-│  │  ├─ common
-│  ├─ pages
-│  ├─ utils
-│  ├─ index.js
-└─ └─ App.js
+│  ├─ __mocks__
+│  ├─ __tests__
+│  ├─ components 
+│  │  ├─ layout 
+│  │  ├─  └─ MainLayout.ts
+│  │  ├─ table
+│  │  ├─  └─ searchTool
+│  │  ├─      └─ tool
+│  │  ├─          └─ SearchBar.tsx
+│  │  ├─          └─ FilterButton.tsx
+│  │  ├─      └─ SearchTool.tsx
+│  │  ├─  └─ OrderTable.tsx
+│  │  ├─  └─ Pagenation.tsx
+│  ├─ constants
+│  │  └─ page.ts
+│  ├─ hooks
+│  │  └─ useFilter.tsx
+│  │  └─ useQuery.tsx
+│  ├─ pages
+│  │  └─ HomePage.tsx
+│  ├─ router
+│  │  └─ index.tsx
+│  ├─ router 
+│  │  └─ loader
+│  ├─ styles 
+│  │  └─ GlobalStyles.tsx
+│  ├─ types 
+│  │  └─ index.ts
+│  ├─ index.js
+└─ └─ App.js
 ```
 
 ## ✅ Team Rules
@@ -98,10 +122,9 @@ $ npm start
 2. 브랜치 관리를 더욱 깔끔하게 하기 위함
 
 ```jsx
-- main : 배포 브랜치
+- main : 배포 브랜치 
 	- develop : 개발 브랜치
-		- feature/#[이슈번호] : 각 기능을 개발하는 브랜치
-			- feature/#[이슈번호]-팀원이름
+			- feature/팀원이름 : 각자 전체 기능을 개발하는 브랜치
 ```
 
 ### 3. Prettier
@@ -173,16 +196,15 @@ $ npm start
 
 ### 👏 협업 방법
 
-주된 커뮤니케이션 툴로 [팀 노션 페이지](https://www.notion.so/89a35a261c6948f4846fc3d3dc6ae582)와 Discord, [Figma](https://www.figma.com/file/LnyJLz3bY48lhIByKNDWpf/Week-3-Project-%3A-%ED%94%8C%EB%A0%89%EC%8B%9C%EC%8A%A4?t=nBw8mR8U8cA1gwwH-0)를 사용했습니다.
+주된 커뮤니케이션 툴로 [팀 노션 페이지](https://www.notion.so/89a35a261c6948f4846fc3d3dc6ae582)와 Discord, Figma를 사용했습니다.
 
 1. 기능별로 팀원 개개인의 코드 리뷰
-
 2. 토론을 통해 Best Practice 선정
-
-- **[노션 페이지](https://www.notion.so/Team-Project-Template-da0f0a1c78c94ce7b872b8a1b7457cf4) / [Figma](https://www.figma.com/files/team/1214837984250311510/Wanted-FE-Internship?fuid=1115242331888961230)**
-
-  - 회의를 통해 팀원들의 코드를 분석하고, 그 중에서 Best Practice 정하고, commit message convention, git flow 전략 등 Team Rules를 정하기 위해 활용
-
+- **[노션 페이지](https://www.notion.so/Team-Project-Template-da0f0a1c78c94ce7b872b8a1b7457cf4) /** Figma
+    - 회의를 통해 팀원들의 코드를 분석하고, 그 중에서 Best Practice 정하고,
+    commit message convention, git flow 전략 등 Team Rules를 정하기 위해 활용
+- **Discord**
+    - 팀원들의 의사소통 및 화면 공유를 통한 협업을 위해 활용
 - **Discord**
 
   - 팀원들의 의사소통 및 화면 공유를 통한 협업을 위해 활용
@@ -197,9 +219,56 @@ Issue를 정의하고 하루에 한가지의 이슈를 다같이 진행한 후 �
 
 ## [Issue](https://github.com/wanted-onboarding-10team/pre-onboarding-9th-4-10/issues)
 
+| 날짜 | 제목                                                                                                      |
+| ---- | --------------------------------------------------------------------------------------------------------- |
+| 3/19 | [#1 개발환경 세팅 ](https://github.com/wanted-onboarding-10team/pre-onboarding-9th-4-10/issues/1)         |
+|      | [#2 주문 목록 페이지 구현](https://github.com/wanted-onboarding-10team/pre-onboarding-9th-4-10/issues/2)    |
+|      | [#3 정렬 / 필터링 / 검색 / 서버 주문 최신화 기능 구현](https://github.com/wanted-onboarding-10team/pre-onboarding-9th-4-10/issues/3) |
+|      | [#4 컴포넌트에 대한 테스트 코드 구현](https://github.com/wanted-onboarding-10team/pre-onboarding-9th-4-10/issues/4)       |
+| 3/23 | [Code refactoring](https://github.com/wanted-onboarding-10team/pre-onboarding-9th-4-10/issues) |
+
+------
+
 ---
 
 **주요 논점**
+
+- **[동룡]의 코드로 선정된 이유**
+    - 정말 필요한 코드만 쓰신 느낌 그래서 가독성이 굉장히 높았던 점
+    - 정렬, 필터링, 검색, 페이지네이션을 쿼리 스트링으로 구현해서 새로고침해도 데이터가 유지되게 한 점
+    - customHook(useFilter, useQuery)으로 관심사 분리하여 코드 가독성을 높인 점
+    - 파일 구조가 가장 깔끔했던 점
+    - 요구사항에 가장 충실한 작업물 (테스트 코드 구현)
+    
+- **요구사항을 구현함에 있어 팀원들끼리 채택한 기술**
+- 필터링 구현 방법
+        - 라이브러리 사용 유무(react-table) (#10)
+        - query parameter vs state
+	
+- UI 스타일링 방법
+    - styled-components(#9) vs chakra-ui(#6, #10) vs antd (#12)
+    
+- 데이터 최신화
+    - react-query(#10) vs setinterval
+
+**결정 사항**
+- query parameter
+- chakra-ui 
+(styled-components로 일일이 스타일링하는 것보단 chakra-ui에서 제공하는 스타일링을 사용하기 위함.)
+- setinterval
+
+요구 사항을 만족하기 위해 최소한의 라이브러리 선정하였습니다.
+
+- **추가 리펙토링**
+    - UX 개선
+    - 테스트 케이스 추가 (Veiw 관점에서)
+        - axios 목킹 해보고 되면 알려주기..
+        - 정렬/필터링 기능 잘 되는지
+        - 50줄 보이는지
+    - Input 새로고침 시 value 사라짐 수정
+    - 파일 구조 및 Import 개선
+    - UI 변경 (styled-components → chakra-ui)
+
 
 ### 참여 멤버
 
