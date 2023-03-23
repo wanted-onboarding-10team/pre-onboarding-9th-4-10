@@ -43,9 +43,9 @@ const OrderTable = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
             <Tr key={order.id}>
               {orderKeys.map(prop => {
                 return prop.displayType ? (
-                  <Td>{prop.displayType(order[prop.key])}</Td>
+                  <Td key={prop.key}>{prop.displayType(order[prop.key])}</Td>
                 ) : (
-                  <Td>{order[prop.key]}</Td>
+                  <Td key={prop.key}>{order[prop.key]}</Td>
                 );
               })}
             </Tr>
