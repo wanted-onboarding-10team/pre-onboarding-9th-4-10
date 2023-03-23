@@ -1,5 +1,6 @@
 import { Table, TableContainer, Td, Thead, Tr } from '@chakra-ui/react';
 import { orderKeys } from 'constants/orderKeys';
+import { Fragment } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { OrderCategory } from 'types';
 
@@ -38,7 +39,7 @@ const OrderTable = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
             })}
           </Tr>
         </Thead>
-        <tbody>
+        <tbody data-testid='table-content'>
           {orderList &&
             orderList.map(order => (
               <Tr key={order.id}>

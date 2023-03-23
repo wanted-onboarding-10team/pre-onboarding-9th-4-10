@@ -31,6 +31,8 @@ const SearchBar = () => {
           type='text'
           id='search'
           aria-label='search-input'
+          data-testid='search-input'
+          value={searchString}
           onChange={handleChange}
           variant='flushed'
           defaultValue={query.get('search') ?? ''}
