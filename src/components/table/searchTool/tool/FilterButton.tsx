@@ -1,5 +1,5 @@
+import { Button, ButtonGroup } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 const FilterButton = () => {
   const [query, setQuery] = useSearchParams();
@@ -16,7 +16,7 @@ const FilterButton = () => {
   };
 
   return (
-    <ButtonGroup>
+    <ButtonGroup spacing='30px'>
       <Button value='true' onClick={handleClick}>
         완료목록
       </Button>
@@ -29,14 +29,3 @@ const FilterButton = () => {
 };
 
 export default FilterButton;
-
-const ButtonGroup = styled.div`
-  width: 50%;
-  display: flex;
-  justify-content: space-between;
-`;
-const Button = styled.button`
-  width: 60px;
-  height: 30px;
-  background-color: #e2e2e2;
-`;

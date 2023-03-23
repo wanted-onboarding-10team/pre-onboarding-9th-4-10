@@ -6,7 +6,6 @@ import { PAGE } from 'constants/page';
 import useFilter from 'hooks/useFilter';
 import useQuery from 'hooks/useQuery';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 const HomePage = () => {
   const { data: responseData } = useQuery('/data/mock_data.json');
@@ -18,24 +17,12 @@ const HomePage = () => {
 
   return (
     <MainLayout>
-      <ToolSection>
-        <SearchTool />
-      </ToolSection>
-      <TableSection>
-        <OrderTable orderList={fabricatedData?.slice(startPageNumber, endPageNumber)} />
-        <Pagenation orderList={fabricatedData} />
-      </TableSection>
+      <SearchTool />
+
+      <OrderTable orderList={fabricatedData?.slice(startPageNumber, endPageNumber)} />
+      <Pagenation orderList={fabricatedData} />
     </MainLayout>
   );
 };
 
 export default HomePage;
-
-const ToolSection = styled.section`
-  width: 100%;
-`;
-
-const TableSection = styled.section`
-  width: 100%;
-  height: 80%;
-`;
