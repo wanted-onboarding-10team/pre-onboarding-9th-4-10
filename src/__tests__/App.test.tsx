@@ -39,7 +39,7 @@ describe('App test', () => {
     describe('특정 날의 데이터만 보여야 할 경우', () => {
       beforeEach(setUpForDateSelected);
 
-      it('데이터는 오늘의 거래건(2023-03-08)만 보여진다.', () => {
+      it('데이터는 오늘의 거래건(2023-03-08)만 보여진다', () => {
         const trs = document.querySelectorAll('tbody > tr');
         const transactionIndex = orderKeys.findIndex(
           orderKey => orderKey.key === 'transaction_time',
@@ -56,7 +56,7 @@ describe('App test', () => {
         expect(trs.length).toEqual(50);
       });
 
-      it('페이지네이션이 해당 주문 건수에 맞춰 그려진다.', () => {
+      it('페이지네이션이 해당 주문 건수에 맞춰 그려진다', () => {
         const maxIndex = Math.ceil(mockDataBySelectedDate.length / 50);
         const pagingContainer = screen.getByLabelText('pagenation-buttons');
         const buttons = getAllByRole(pagingContainer, 'button');
@@ -92,7 +92,7 @@ describe('App test', () => {
         expect(isSorted).not.toBeFalsy();
       });
 
-      test('"거래일 & 거래시간" 버튼을 눌렀을 때, "거래일 & 거래시간"을 기준으로 데이터가 내림차순으로 정렬되는가', () => {
+      test('"거래일 & 거래시간" 버튼을 눌렀을 때, "거래일 & 거래시간"을 기준으로 데이터가 내림차순으로 정렬', () => {
         const transactionIndex = orderKeys.findIndex(
           orderKey => orderKey.key === 'transaction_time',
         );
@@ -144,7 +144,7 @@ describe('App test', () => {
   describe('필터', () => {
     const statusIndex = orderKeys.findIndex(orderKey => orderKey.key === 'status');
     beforeEach(setUpForDateSelected);
-    test('"완료목록" 버튼을 누르면 주문처리상태가 "완료"인 것들만 보인다.', async () => {
+    test('"완료목록" 버튼을 누르면 주문처리상태가 "완료"인 것들만 보인다', async () => {
       const completeButton = screen.getByText('완료목록');
       fireEvent.click(completeButton);
       const trs = document.querySelectorAll('tbody > tr');
@@ -153,7 +153,7 @@ describe('App test', () => {
       });
       expect(status.every(v => v === '완료')).not.toBeFalsy();
     });
-    test('"미완료목록" 버튼을 누르면 주문처리상태가 "미완료"인 것들만 보인다.', async () => {
+    test('"미완료목록" 버튼을 누르면 주문처리상태가 "미완료"인 것들만 보인다', async () => {
       const inCompleteButton = screen.getByText('미완료목록');
       fireEvent.click(inCompleteButton);
       const trs = document.querySelectorAll('tbody > tr');
