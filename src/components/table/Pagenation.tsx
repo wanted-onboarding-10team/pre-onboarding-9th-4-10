@@ -25,7 +25,12 @@ const Pagenation = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
   }, [query]);
 
   return (
-    <Flex aria-label='pagenation-buttons' marginTop='50px' gap='30px' data-testid='pagenation-buttons'>
+    <Flex
+      aria-label='pagenation-buttons'
+      marginTop='50px'
+      gap='30px'
+      data-testid='pagenation-buttons'
+    >
       {orderList &&
         Array.from({ length: Math.ceil(orderList.length / 50) }).map((page, index) => {
           return (
