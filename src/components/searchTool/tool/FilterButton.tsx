@@ -1,9 +1,9 @@
+import { Button, ButtonGroup } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 const FilterButton = () => {
   const [query, setQuery] = useSearchParams();
-
+  const status = query.get('status');
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const prevQuery = Array.from(query).reduce((prev: { [index: string]: string }, current) => {
       prev[current[0]] = current[1];
@@ -16,11 +16,11 @@ const FilterButton = () => {
   };
 
   return (
-    <ButtonGroup>
-      <Button value='true' onClick={handleClick}>
+    <ButtonGroup spacing='30px'>
+      <Button value='true' onClick={handleClick} isDisabled={status === 'true'}>
         완료목록
       </Button>
-      <Button value='false' onClick={handleClick}>
+      <Button value='false' onClick={handleClick} isDisabled={status === 'false'}>
         미완료목록
       </Button>
       <Button onClick={handleClick}>전체</Button>
@@ -29,14 +29,3 @@ const FilterButton = () => {
 };
 
 export default FilterButton;
-
-const ButtonGroup = styled.div`
-  width: 50%;
-  display: flex;
-  justify-content: space-between;
-`;
-const Button = styled.button`
-  width: 60px;
-  height: 30px;
-  background-color: #e2e2e2;
-`;

@@ -1,5 +1,4 @@
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { Pagenation, OrderTable, MainLayout, SearchTool } from 'components';
 import { PAGE } from 'constants/page';
 import { useFilter, useQuery } from 'hooks';
@@ -14,24 +13,12 @@ const HomePage = () => {
 
   return (
     <MainLayout>
-      <ToolSection>
-        <SearchTool />
-      </ToolSection>
-      <TableSection>
-        <OrderTable orderList={fabricatedData?.slice(startPageNumber, endPageNumber)} />
-        <Pagenation orderList={fabricatedData} />
-      </TableSection>
+      <SearchTool />
+
+      <OrderTable orderList={fabricatedData?.slice(startPageNumber, endPageNumber)} />
+      <Pagenation orderList={fabricatedData} />
     </MainLayout>
   );
 };
 
 export default HomePage;
-
-const ToolSection = styled.section`
-  width: 100%;
-`;
-
-const TableSection = styled.section`
-  width: 100%;
-  height: 80%;
-`;

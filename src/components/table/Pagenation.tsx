@@ -1,6 +1,6 @@
+import { Button, Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { OrderCategory } from 'types';
 
 const Pagenation = ({ orderList }: { orderList: OrderCategory[] | undefined }) => {
@@ -25,40 +25,23 @@ const Pagenation = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
   }, [query]);
 
   return (
-    <PagenationBox data-testid='pagenation-buttons'>
+    <Flex aria-label='pagenation-buttons' marginTop='50px' gap='30px' data-testid='pagenation-buttons'>
       {orderList &&
         Array.from({ length: Math.ceil(orderList.length / 50) }).map((page, index) => {
           return (
-            <PageButton
+            <Button
               key={`page_${index + 1}`}
               onClick={handlePageQuery}
               value={index + 1}
-              style={{
-                border: currentPage === index + 1 ? '2px solid black' : '',
-              }}
+              border={currentPage === index + 1 ? '2px solid' : ''}
+              borderColor='green.400'
             >
               {index + 1}
-            </PageButton>
+            </Button>
           );
         })}
-    </PagenationBox>
+    </Flex>
   );
 };
 
 export default Pagenation;
-
-const PagenationBox = styled.div`
-  width: 100%;
-  height: 60px;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-`;
-
-const PageButton = styled.button`
-  width: 30px;
-  height: 30px;
-  color: black;
-  border-radius: 50%;
-`;

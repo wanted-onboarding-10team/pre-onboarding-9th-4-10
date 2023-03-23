@@ -1,7 +1,7 @@
+import { Table, TableContainer, Td, Thead, Tr } from '@chakra-ui/react';
 import { orderKeys } from 'constants/orderKeys';
 import { Fragment } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { OrderCategory } from 'types';
 
 const OrderTable = ({ orderList }: { orderList: OrderCategory[] | undefined }) => {
@@ -23,60 +23,41 @@ const OrderTable = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
   };
 
   return orderList?.length !== 0 ? (
-    <Table>
-      <Thead>
-        <Tr>
-          {orderKeys.map(header => {
-            return header.sortable ? (
-              <Td onClick={() => handleAlignQuery(header.key)} key={header.key} aligns={true}>
-                {header.displayName}
-                {query.get('align') === header.key ? '▼' : '▲'}
-              </Td>
-            ) : (
-              <Td key={header.key}>{header.displayName}</Td>
-            );
-          })}
-        </Tr>
-      </Thead>
-      <tbody data-testid='table-content'>
-        {orderList?.map(order => (
-          <Tr key={order.id}>
-            {orderKeys.map(prop => {
-              return prop.displayType ? (
-                <Td key={prop.key}>{prop.displayType(order[prop.key])}</Td>
+    <TableContainer width='1200px' margin='0 auto' height='800px' overflowY='scroll'>
+      <Table variant='simple'>
+        <Thead>
+          <Tr fontWeight='bold'>
+            {orderKeys.map(header => {
+              return header.sortable ? (
+                <Td onClick={() => handleAlignQuery(header.key)} key={header.key}>
+                  {header.displayName}
+                  {query.get('align') === header.key ? '▼' : '▲'}
+                </Td>
               ) : (
-                <Td key={prop.key}>{order[prop.key]}</Td>
+                <Td key={header.key}>{header.displayName}</Td>
               );
             })}
           </Tr>
-        ))}
-      </tbody>
-    </Table>
+        </Thead>
+        <tbody data-testid='table-content'>
+          {orderList &&
+            orderList.map(order => (
+              <Tr key={order.id}>
+                {orderKeys.map(prop => {
+                  return prop.displayType ? (
+                    <Td key={prop.key}>{prop.displayType(order[prop.key])}</Td>
+                  ) : (
+                    <Td key={prop.key}>{order[prop.key]}</Td>
+                  );
+                })}
+              </Tr>
+            ))}
+        </tbody>
+      </Table>
+    </TableContainer>
   ) : (
     <div>결과가없습니다</div>
   );
 };
 
 export default OrderTable;
-
-const Table = styled.table`
-  border: 1px solid black;
-  width: 100%;
-  text-align: center;
-`;
-
-const Thead = styled.thead`
-  font-weight: 700;
-`;
-
-const Tr = styled.tr`
-  border-bottom: 1px solid black;
-`;
-
-const Td = styled.td<{ aligns?: boolean }>`
-  padding: 5px 0;
-  cursor: ${props => props.aligns && 'pointer'};
-  & + & {
-    border-left: 1px solid black;
-  }
-`;

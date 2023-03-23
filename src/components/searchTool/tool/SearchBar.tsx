@@ -1,6 +1,6 @@
+import { Button, Flex, Input } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 const SearchBar = () => {
   const [query, setQuery] = useSearchParams();
@@ -15,6 +15,7 @@ const SearchBar = () => {
     }, {});
 
     prevQuery.search = searchString;
+
     setQuery(prevQuery);
   };
 
@@ -23,32 +24,22 @@ const SearchBar = () => {
   };
 
   return (
-    <SearchContainer>
-      <form onSubmit={handleSearch} data-testid='search-form'>
-        <SearchInput
+    <form onSubmit={handleSearch} data-testid='search-form'>
+      <Flex>
+        <Input
+          width='300px'
           type='text'
           id='search'
+          aria-label='search-input'
           data-testid='search-input'
           value={searchString}
           onChange={handleChange}
+          variant='flushed'
+          defaultValue={query.get('search') ?? ''}
         />
-        <button type='submit'>검색</button>
-      </form>
-    </SearchContainer>
+        <Button type='submit'>검색</Button>
+      </Flex>
+    </form>
   );
 };
 export default SearchBar;
-
-const SearchInput = styled.input`
-  width: 200px;
-  height: 30px;
-  border-radius: 20px;
-  border: 1px solid black;
-`;
-
-const SearchContainer = styled.div`
-  width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;

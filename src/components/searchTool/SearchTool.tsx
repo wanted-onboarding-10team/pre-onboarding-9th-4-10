@@ -1,19 +1,13 @@
-import styled from 'styled-components';
+import { Flex } from '@chakra-ui/react';
 import { FilterButton, SearchBar } from 'components';
 
 const SearchTool = () => {
   return (
-    <ToolContainer>
+    <Flex width='1200px' margin='30px auto' justifyContent='space-between'>
       <SearchBar />
       <FilterButton />
-    </ToolContainer>
+    </Flex>
   );
 };
 
 export default SearchTool;
-const ToolContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-`;
