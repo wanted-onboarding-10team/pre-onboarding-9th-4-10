@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import FilterButton from 'components/table/searchTool/tool/FilterButton';
-import SearchBar from 'components/table/searchTool/tool/SearchBar';
+import { FilterButton, SearchBar } from 'components';
 
 const SearchTool = () => {
   return (
