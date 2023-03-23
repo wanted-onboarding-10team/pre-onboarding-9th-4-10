@@ -1,5 +1,5 @@
 import { Button, Flex, Input } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 const SearchBar = () => {
@@ -22,7 +22,9 @@ const SearchBar = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchString(event.target.value);
   };
-
+  useEffect(() => {
+    setSearchString(query.get('search') || '');
+  }, []);
   return (
     <form onSubmit={handleSearch} data-testid='search-form'>
       <Flex>
@@ -35,7 +37,6 @@ const SearchBar = () => {
           value={searchString}
           onChange={handleChange}
           variant='flushed'
-          defaultValue={query.get('search') ?? ''}
         />
         <Button type='submit'>검색</Button>
       </Flex>
