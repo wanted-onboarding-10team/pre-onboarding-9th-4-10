@@ -1,3 +1,4 @@
+import { orderKeys } from 'constants/orderKeys';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { OrderCategory } from 'types';
@@ -24,31 +25,29 @@ const OrderTable = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
     <Table>
       <Thead>
         <Tr>
-          {orderList &&
-            Object.keys(orderList[0]).map(key => {
-              if (key === 'id' || key === 'transaction_time') {
-                return (
-                  <Td onClick={() => handleAlignQuery(key)} key={key} aligns={true}>
-                    {key}
-                    {query.get('align') === key ? '▼' : '▲'}
-                  </Td>
-                );
-              } else {
-                return <Td key={key}>{key}</Td>;
-              }
-            })}
+          {orderKeys.map(header => {
+            return header.sortable ? (
+              <Td onClick={() => handleAlignQuery(header.key)} key={header.key} aligns={true}>
+                {header.displayName}
+                {query.get('align') === header.key ? '▼' : '▲'}
+              </Td>
+            ) : (
+              <Td key={header.key}>{header.displayName}</Td>
+            );
+          })}
         </Tr>
       </Thead>
       <tbody>
         {orderList &&
           orderList.map(order => (
             <Tr key={order.id}>
-              <Td>{order.id}</Td>
-              <Td>{order.transaction_time}</Td>
-              <Td>{order.status ? '완료' : '미완료'}</Td>
-              <Td>{order.customer_id}</Td>
-              <Td>{order.customer_name}</Td>
-              <Td>{order.currency}</Td>
+              {orderKeys.map(prop => {
+                return prop.displayType ? (
+                  <Td>{prop.displayType(order[prop.key])}</Td>
+                ) : (
+                  <Td>{order[prop.key]}</Td>
+                );
+              })}
             </Tr>
           ))}
       </tbody>
