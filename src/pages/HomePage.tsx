@@ -1,12 +1,8 @@
-import MainLayout from 'components/layout/MainLayout';
-import SearchTool from 'components/table/searchTool/SearchTool';
-import OrderTable from 'components/table/OrderTable';
-import Pagenation from 'components/table/Pagenation';
-import { PAGE } from 'constants/page';
-import useFilter from 'hooks/useFilter';
-import useQuery from 'hooks/useQuery';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { Pagenation, OrderTable, MainLayout, SearchTool } from 'components';
+import { PAGE } from 'constants/page';
+import { useFilter, useQuery } from 'hooks';
 
 const HomePage = () => {
   const { data: responseData } = useQuery('/data/mock_data.json');
