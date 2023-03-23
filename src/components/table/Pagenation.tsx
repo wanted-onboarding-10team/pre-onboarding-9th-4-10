@@ -25,7 +25,7 @@ const Pagenation = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
   }, [query]);
 
   return (
-    <PagenationBox aria-label='pagenation-buttons'>
+    <PagenationBox data-testid='pagenation-buttons'>
       {orderList &&
         Array.from({ length: Math.ceil(orderList.length / 50) }).map((page, index) => {
           return (

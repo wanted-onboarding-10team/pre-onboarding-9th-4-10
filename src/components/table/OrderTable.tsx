@@ -1,4 +1,5 @@
 import { orderKeys } from 'constants/orderKeys';
+import { Fragment } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { OrderCategory } from 'types';
@@ -37,19 +38,18 @@ const OrderTable = ({ orderList }: { orderList: OrderCategory[] | undefined }) =
           })}
         </Tr>
       </Thead>
-      <tbody>
-        {orderList &&
-          orderList.map(order => (
-            <Tr key={order.id}>
-              {orderKeys.map(prop => {
-                return prop.displayType ? (
-                  <Td>{prop.displayType(order[prop.key])}</Td>
-                ) : (
-                  <Td>{order[prop.key]}</Td>
-                );
-              })}
-            </Tr>
-          ))}
+      <tbody data-testid='table-content'>
+        {orderList?.map(order => (
+          <Tr key={order.id}>
+            {orderKeys.map(prop => {
+              return prop.displayType ? (
+                <Td key={prop.key}>{prop.displayType(order[prop.key])}</Td>
+              ) : (
+                <Td key={prop.key}>{order[prop.key]}</Td>
+              );
+            })}
+          </Tr>
+        ))}
       </tbody>
     </Table>
   ) : (
