@@ -1,7 +1,7 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import SearchTool from 'components/table/searchTool/SearchTool';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { SearchTool } from 'components';
 
 describe('검색기능 테스트', () => {
   it('상태 버튼 클릭시 쿼리 스트링 수정 테스트', () => {

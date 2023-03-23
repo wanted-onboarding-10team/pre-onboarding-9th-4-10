@@ -1,6 +1,5 @@
-import FilterButton from 'components/table/searchTool/tool/FilterButton';
-import SearchBar from 'components/table/searchTool/tool/SearchBar';
 import { Flex } from '@chakra-ui/react';
+import { FilterButton, SearchBar } from 'components';
 
 const SearchTool = () => {
   return (
