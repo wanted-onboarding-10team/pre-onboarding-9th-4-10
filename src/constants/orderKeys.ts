@@ -7,7 +7,7 @@ export const orderKeys: OrderProp[] = [
     key: 'status',
     displayName: '주문처리상태',
     displayType: value => {
-      return value ? '처리' : '비처리';
+      return value ? '완료' : '미완료';
     },
   },
   { key: 'customer_id', displayName: '고객번호' },
