@@ -18,6 +18,15 @@ const searchDatasByCustomerName = (datas: Order[], search: string | null) => {
     : datas;
 };
 
+const sortOrderDatas = (sortKey: string[], orderDatas: Order[]) => {
+  if (sortKey.includes('transaction_time')) {
+    orderDatas.sort((a, b) => (a.transaction_time > b.transaction_time ? -1 : 1));
+  }
+  if (sortKey.includes('id')) {
+    orderDatas.sort((a, b) => (a.id > b.id ? -1 : 1));
+  }
+};
+
 const pageSize = 50;
 
 const OrderList = ({ orderLists }: OrderListParam) => {
@@ -28,12 +37,7 @@ const OrderList = ({ orderLists }: OrderListParam) => {
 
   let viewDatas = filterDatasByStatus(orderLists, filter);
   viewDatas = searchDatasByCustomerName(viewDatas, search);
-
-  sortKey.forEach(sortKey => {
-    viewDatas.sort((a, b) =>
-      (sortKey === 'id' ? a.id > b.id : a.transaction_time > b.transaction_time) ? -1 : 1,
-    );
-  });
+  sortOrderDatas(sortKey, viewDatas);
 
   const totalOrders = viewDatas ? viewDatas.length - 1 : 0;
   const maxIndex =
