@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SearchTool } from 'components';
 
@@ -54,7 +54,7 @@ describe('검색기능 테스트', () => {
     await waitFor(
       () => {
         const form = screen.getByTestId('search-form');
-        const input = screen.getByLabelText('search-input');
+        const input = screen.getByTestId('search-input');
 
         //input 변경후 submit
         fireEvent.change(input, { target: { value: 'Lee' } });
