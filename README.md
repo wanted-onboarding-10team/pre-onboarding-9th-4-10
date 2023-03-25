@@ -4,13 +4,13 @@
 
 스위치원 브랜드의 기업 과제를 진행하였습니다.
 
-작업 기간 : 3/19 ~ 3/22 (4일간 진행)
+작업 기간 : 3/19 ~ 3/22 (5일간 진행)
 
 ### 🌟Preview
 
-| 메인 페이지 | 필터링 후 메인 페이지 |
-| ----------- | --------------------- |
-|             |                       |
+| 메인 페이지 | 페이지네이션 | 정렬 | 필터링 | 검색 | 
+| --- | --- | --- | --- | --- |
+| <img src="https://velog.velcdn.com/images/hongsoom/post/02894bfc-7f8d-4b7e-9626-b318d0353e10/image.PNG" alt="메인 페이지" /> | <img src="https://velog.velcdn.com/images/hongsoom/post/cc905dda-7957-4514-bc95-3a8b7789cc1f/image.gif" alt="페이지네이션" /> | <img src="https://velog.velcdn.com/images/hongsoom/post/77b5ed77-4a1a-47d3-a5d8-bf9db5596e30/image.gif" alt="정렬" /> | <img src="https://velog.velcdn.com/images/hongsoom/post/e4a3fe6f-be8c-4dfa-b3e0-b3e2120d1dc1/image.gif" alt="필터링" /> | <img src="https://velog.velcdn.com/images/hongsoom/post/63b547f4-2b92-4efd-ae25-6132ccbf68fa/image.gif" alt="검색" /> |
 
 ### 📝Contents
 
@@ -75,13 +75,13 @@ $ npm start
 │  │  ├─ layout 
 │  │  ├─  └─ MainLayout.ts
 │  │  ├─ table
-│  │  ├─  └─ searchTool
-│  │  ├─      └─ tool
-│  │  ├─          └─ SearchBar.tsx
-│  │  ├─          └─ FilterButton.tsx
-│  │  ├─      └─ SearchTool.tsx
 │  │  ├─  └─ OrderTable.tsx
 │  │  ├─  └─ Pagenation.tsx
+│  │  ├─ searchTool
+│  │  ├─   └─ tool
+│  │  ├─       └─ SearchBar.tsx
+│  │  ├─       └─ FilterButton.tsx
+│  │  ├─   └─ SearchTool.tsx
 │  ├─ constants
 │  │  └─ page.ts
 │  ├─ hooks
