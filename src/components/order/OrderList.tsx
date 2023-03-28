@@ -1,7 +1,8 @@
-import { Box, Button, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
+import { Box, Button, Flex, Table, Tbody, Td, Text, Thead, Tr } from '@chakra-ui/react';
 import OrderSearch from 'components/order/OrderSearch';
 import Paging from 'components/order/Paging';
-import { useSearchParams } from 'react-router-dom';
+import { OrderProps } from 'constants/order';
+import useParams from 'hook/useParams';
 import { Order } from 'types/Order';
 
 interface OrderListParam {
@@ -30,10 +31,7 @@ const sortOrderDatas = (sortKey: string[], orderDatas: Order[]) => {
 const pageSize = 50;
 
 const OrderList = ({ orderLists }: OrderListParam) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sortKey: string[] = searchParams.getAll('sort');
-  const filter = searchParams.get('filter');
-  const search = searchParams.get('search');
+  const { sortKey, setSortKey, filter, setFiltering, search, page } = useParams();
 
   let viewDatas = filterDatasByStatus(orderLists, filter);
   viewDatas = searchDatasByCustomerName(viewDatas, search);
@@ -42,29 +40,7 @@ const OrderList = ({ orderLists }: OrderListParam) => {
   const totalOrders = viewDatas ? viewDatas.length - 1 : 0;
   const maxIndex =
     Math.floor(totalOrders / pageSize) - 1 > 0 ? Math.floor(totalOrders / pageSize) - 1 : 0;
-  const pagingIndex = parseInt(searchParams.get('page') ?? '1') - 1;
-
-  const setSortKey = (key: string) => {
-    const newSortKey = sortKey.includes(key)
-      ? sortKey.filter(value => value !== key)
-      : [...sortKey, key];
-    searchParams.delete('sort');
-    newSortKey.forEach(key => {
-      searchParams.append('sort', key);
-    });
-    setSearchParams(searchParams);
-  };
-
-  const setFiltering = (status: boolean) => {
-    setSearchParams(searchParams => {
-      if (filter === '' + status) {
-        searchParams.delete('filter');
-      } else {
-        searchParams.set('filter', '' + status);
-      }
-      return searchParams;
-    });
-  };
+  const pagingIndex = page - 1;
 
   return (
     <>
@@ -123,26 +99,28 @@ const OrderList = ({ orderLists }: OrderListParam) => {
       <Table variant='striped'>
         <Thead>
           <Tr>
-            <Th>주문번호</Th>
-            <Th>거래 시간</Th>
-            <Th>주문처리상태</Th>
-            <Th>고객번호</Th>
-            <Th>고객이름</Th>
-            <Th>가격</Th>
+            {OrderProps.map(prop => (
+              <Td key={prop.dataKey}>{prop.name}</Td>
+            ))}
           </Tr>
         </Thead>
         <Tbody>
           {viewDatas.length > 0 ? (
-            viewDatas.slice(pageSize * pagingIndex, pageSize * pagingIndex + pageSize).map(item => (
-              <Tr key={item.id}>
-                <Td>{item.id}</Td>
-                <Td>{item.transaction_time}</Td>
-                {item.status ? <Td>처리</Td> : <Td color='red.300'>비처리</Td>}
-                <Td>{item.customer_id}</Td>
-                <Td>{item.customer_name}</Td>
-                <Td>{item.currency}</Td>
-              </Tr>
-            ))
+            viewDatas
+              .slice(pageSize * pagingIndex, pageSize * pagingIndex + pageSize)
+              .map(item => (
+                <Tr key={item.id}>
+                  {OrderProps.map(prop =>
+                    prop.isDisplay ? (
+                      <Td key={'content_' + prop.dataKey}>
+                        {prop.displayFormat
+                          ? prop.displayFormat(item[prop.dataKey])
+                          : item[prop.dataKey]}
+                      </Td>
+                    ) : null,
+                  )}
+                </Tr>
+              ))
           ) : (
             <Tr>
               <Td colSpan={6}>주문 건이 존재하지 않습니다.</Td>
@@ -150,7 +128,6 @@ const OrderList = ({ orderLists }: OrderListParam) => {
           )}
         </Tbody>
       </Table>
-
       {viewDatas.length > 0 && <Paging maxIndex={maxIndex} pagingIndex={pagingIndex} />}
     </>
   );

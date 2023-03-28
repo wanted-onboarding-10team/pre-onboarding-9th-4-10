@@ -1,9 +1,9 @@
 import { AbsoluteCenter, Box, Container, Heading, Select, Spinner, Text } from '@chakra-ui/react';
+import { getOrders } from 'api/order';
 import OrderList from 'components/order/OrderList';
 import { useQuery } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
 import { Order } from 'types/Order';
-import { getOrders } from 'utils/api/order';
 
 const OrderPage = () => {
   const { isLoading, data } = useQuery<Order[]>('orders', getOrders);

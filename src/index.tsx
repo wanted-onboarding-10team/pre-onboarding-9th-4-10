@@ -1,8 +1,8 @@
+import { router } from 'constants/router';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RouterProvider } from 'react-router-dom';
-import { router } from 'utils/router/router';
 import reportWebVitals from './reportWebVitals';
 
 const queryClient = new QueryClient({
